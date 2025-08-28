@@ -20,20 +20,50 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       startTime: 0,
       endTime: 10,
       branchTriggerTime: 8,
+      branchTitle: {
+        text: '选择你的冒险路径',
+        position: { x: 'center', y: 'top', offsetY: 10 },
+        style: {
+          fontSize: '24px',
+          fontWeight: '700',
+          color: '#ffffff',
+          backgroundColor: 'transparent',
+          padding: '12px 24px',
+          borderRadius: '12px',
+          border: 'none',
+          backdropBlur: false
+        }
+      },
       branches: [
         {
           id: 'path-forest',
-          label: '进入神秘森林',
+          label: '森林',
           description: '选择这条路径将带你深入未知的森林深处',
           nextSegmentId: 'forest-path',
-          position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 }
+          position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
+          style: { 
+            shape: 'circle', 
+            size: 'large', 
+            textPosition: 'right', 
+            textColor: '#ffffff',
+            transparent: true,
+            animation: { type: 'pulse', duration: 2, loop: true }
+          }
         },
         {
           id: 'path-village',
-          label: '前往附近村庄',
+          label: '村庄',
           description: '选择这条安全的路径前往村庄寻求帮助',
           nextSegmentId: 'village-path',
-          position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 }
+          position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
+          style: { 
+            shape: 'circle', 
+            size: 'large', 
+            textPosition: 'left', 
+            textColor: '#ffffff',
+            transparent: true,
+            animation: { type: 'glow', duration: 1.5, loop: true }
+          }
         }
       ]
     },
@@ -44,27 +74,65 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       startTime: 0,
       endTime: 15,
       branchTriggerTime: 12,
+      branchTitle: {
+        text: '森林深处的神秘声音',
+        position: { x: 'left', y: 'top', offsetX: 5, offsetY: 10 },
+        style: {
+          fontSize: '20px',
+          fontWeight: '600',
+          color: '#22c55e',
+          backgroundColor: '#000000dd',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          border: '2px solid #22c55e',
+          backdropBlur: true
+        }
+      },
       branches: [
         {
           id: 'investigate-sound',
-          label: '调查奇怪的声音',
+          label: '调查声音',
           description: '你听到了森林深处传来的神秘声音',
           nextSegmentId: 'mystery-encounter',
-          position: { x: 'center', y: 'top', offsetY: 15 }
+          position: { x: 'center', y: 'top', offsetY: 15 },
+          style: { 
+            shape: 'rectangle', 
+            size: 'medium', 
+            textPosition: 'inside', 
+            textColor: '#ffffff',
+            transparent: true,
+            animation: { type: 'bounce', duration: 1, loop: true }
+          }
         },
         {
           id: 'ignore-sound',
-          label: '忽略声音继续前进',
+          label: '继续前进',
           description: '保持谨慎，继续沿着小径前进',
           nextSegmentId: 'safe-path',
-          position: { x: 'left', y: 'center', offsetX: 5 }
+          position: { x: 'left', y: 'center', offsetX: 5 },
+          style: { 
+            shape: 'circle', 
+            size: 'medium', 
+            textPosition: 'bottom', 
+            textColor: '#ffffff',
+            transparent: true,
+            animation: { type: 'ripple', duration: 2.5, loop: true }
+          }
         },
         {
           id: 'return-back',
-          label: '返回起点',
+          label: '返回',
           description: '感到害怕，决定返回安全的地方',
           nextSegmentId: 'village-path',
-          position: { x: 'right', y: 'center', offsetX: -5 }
+          position: { x: 'right', y: 'center', offsetX: -5 },
+          style: { 
+            shape: 'circle', 
+            size: 'small', 
+            textPosition: 'top', 
+            textColor: '#ffffff',
+            transparent: true,
+            animation: { type: 'pulse', duration: 1.2, loop: true }
+          }
         }
       ]
     },
@@ -75,6 +143,20 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       startTime: 0,
       endTime: 12,
       branchTriggerTime: 10,
+      branchTitle: {
+        text: '村庄中的选择',
+        position: { x: 'right', y: 'center', offsetX: -5 },
+        style: {
+          fontSize: '18px',
+          fontWeight: '500',
+          color: '#3b82f6',
+          backgroundColor: '#000000bb',
+          padding: '8px 16px',
+          borderRadius: '6px',
+          border: '1px solid #3b82f6',
+          backdropBlur: true
+        }
+      },
       branches: [
         {
           id: 'talk-elder',

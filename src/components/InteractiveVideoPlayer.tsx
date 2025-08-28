@@ -221,6 +221,55 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
 
   return (
     <div className={`interactive-video-player ${className}`}>
+      {/* 自定义动画样式 */}
+      <style jsx>{`
+        @keyframes custom-glow {
+          0%, 100% {
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.1);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4);
+          }
+        }
+        
+        @keyframes custom-ripple {
+          0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+          }
+          70% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+          }
+          100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+          }
+        }
+        
+        @keyframes custom-pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
+        }
+        
+        .animate-custom-glow {
+          animation: custom-glow 2s ease-in-out infinite;
+        }
+        
+        .animate-custom-ripple {
+          animation: custom-ripple 2s ease-out infinite;
+        }
+        
+        .animate-custom-pulse {
+          animation: custom-pulse 2s ease-in-out infinite;
+        }
+      `}</style>
       <div className="relative">
         <canvas
           ref={canvasRef}
@@ -232,84 +281,235 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         {/* 分支选择覆盖层 */}
         {playerState === PlayerState.WAITING_FOR_CHOICE && availableBranches.length > 0 && (
           <div className="absolute inset-0 pointer-events-none">
-            {/* 标题 - 固定在顶部 */}
-            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 pointer-events-none">
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg px-6 py-3 border border-white/20">
-                <h3 className="text-white text-xl font-bold text-center whitespace-nowrap">选择你的路径</h3>
-              </div>
-            </div>
-            
-            {/* 分支按钮 - 根据配置位置放置 */}
-            {availableBranches.map((branch, index) => {
-              const position = branch.position || { x: 'center', y: 'bottom' };
-              const getPositionClasses = () => {
-                let classes = 'absolute pointer-events-auto';
-                
-                // 水平位置
-                switch (position.x) {
-                  case 'left':
-                    classes += ' left-8';
-                    break;
-                  case 'right':
-                    classes += ' right-8';
-                    break;
-                  case 'center':
-                  default:
-                    classes += ' left-1/2 transform -translate-x-1/2';
-                    break;
-                }
-                
-                // 垂直位置
-                switch (position.y) {
-                  case 'top':
-                    classes += ' top-24';
-                    break;
-                  case 'center':
-                    classes += ' top-1/2 -translate-y-1/2';
-                    if (position.x === 'center') {
-                      classes = classes.replace('transform -translate-x-1/2', 'transform -translate-x-1/2 -translate-y-1/2');
-                    } else {
-                      classes += ' transform';
-                    }
-                    break;
-                  case 'bottom':
-                  default:
-                    classes += ' bottom-8';
-                    break;
-                }
-                
-                return classes;
-              };
-              
-              const getCustomOffset = () => {
-                const style: React.CSSProperties = {};
-                if (position.offsetX) {
-                  style.marginLeft = `${position.offsetX}%`;
-                }
-                if (position.offsetY) {
-                  style.marginTop = `${position.offsetY}%`;
-                }
-                return style;
-              };
-              
-              return (
-                <div
-                  key={branch.id}
-                  className={getPositionClasses()}
-                  style={getCustomOffset()}
+            {/* 可配置标题 */}
+            {currentSegment?.branchTitle && (
+              <div 
+                className={`absolute pointer-events-none ${
+                   currentSegment.branchTitle.position?.x === 'left' ? 'left-0' :
+                   currentSegment.branchTitle.position?.x === 'right' ? 'right-0' :
+                   'left-1/2 transform -translate-x-1/2'
+                 } ${
+                   currentSegment.branchTitle.position?.y === 'top' ? 'top-0' :
+                   currentSegment.branchTitle.position?.y === 'center' ? 'top-1/2 -translate-y-1/2' :
+                   'bottom-0'
+                 }`}
+                style={{
+                   marginLeft: currentSegment.branchTitle.position?.offsetX ? `${currentSegment.branchTitle.position.offsetX}%` : undefined,
+                   marginTop: currentSegment.branchTitle.position?.offsetY ? `${currentSegment.branchTitle.position.offsetY}%` : undefined,
+                   marginRight: currentSegment.branchTitle.position?.offsetX && currentSegment.branchTitle.position.x === 'right' ? `${-currentSegment.branchTitle.position.offsetX}%` : undefined,
+                   marginBottom: currentSegment.branchTitle.position?.offsetY && currentSegment.branchTitle.position.y === 'bottom' ? `${-currentSegment.branchTitle.position.offsetY}%` : undefined
+                 }}
+               >
+                 <div 
+                   className={`${currentSegment.branchTitle.style?.backdropBlur ? 'backdrop-blur-sm' : ''}`}
+                   style={{
+                     fontSize: currentSegment.branchTitle.style?.fontSize,
+                     fontWeight: currentSegment.branchTitle.style?.fontWeight,
+                     color: currentSegment.branchTitle.style?.color,
+                     backgroundColor: currentSegment.branchTitle.style?.backgroundColor,
+                     padding: currentSegment.branchTitle.style?.padding,
+                     borderRadius: currentSegment.branchTitle.style?.borderRadius,
+                     border: currentSegment.branchTitle.style?.border
+                   }}
                 >
-                  <button
-                    onClick={() => selectBranch(branch)}
-                    className="px-6 py-3 bg-white/95 hover:bg-white text-black rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-xl font-medium min-w-[140px] backdrop-blur-sm border border-white/30 shadow-lg"
-                  >
-                    <div className="text-sm font-bold">{branch.label}</div>
-                    {branch.description && (
-                      <div className="text-xs opacity-70 mt-1 leading-tight">{branch.description}</div>
-                    )}
-                  </button>
+                  <h3 className="text-center whitespace-nowrap">{currentSegment.branchTitle.text}</h3>
                 </div>
-              );
-            })}
+              </div>
+            )}
+            
+            {/* 分支按钮 - 根据配置位置和样式放置 */}
+             {availableBranches.map((branch, index) => {
+               const position = branch.position || { x: 'center', y: 'bottom' };
+               const style = branch.style || { shape: 'rectangle', size: 'medium', textPosition: 'inside' };
+               
+               const getPositionClasses = () => {
+                 let classes = 'absolute pointer-events-auto';
+                 
+                 // 水平位置
+                 switch (position.x) {
+                   case 'left':
+                     classes += ' left-8';
+                     break;
+                   case 'right':
+                     classes += ' right-8';
+                     break;
+                   case 'center':
+                   default:
+                     classes += ' left-1/2 transform -translate-x-1/2';
+                     break;
+                 }
+                 
+                 // 垂直位置
+                 switch (position.y) {
+                   case 'top':
+                     classes += ' top-24';
+                     break;
+                   case 'center':
+                     classes += ' top-1/2 -translate-y-1/2';
+                     if (position.x === 'center') {
+                       classes = classes.replace('transform -translate-x-1/2', 'transform -translate-x-1/2 -translate-y-1/2');
+                     } else {
+                       classes += ' transform';
+                     }
+                     break;
+                   case 'bottom':
+                   default:
+                     classes += ' bottom-8';
+                     break;
+                 }
+                 
+                 return classes;
+               };
+               
+               const getCustomOffset = () => {
+                 const offsetStyle: React.CSSProperties = {};
+                 if (position.offsetX) {
+                   offsetStyle.marginLeft = `${position.offsetX}%`;
+                 }
+                 if (position.offsetY) {
+                   offsetStyle.marginTop = `${position.offsetY}%`;
+                 }
+                 return offsetStyle;
+               };
+               
+               const getButtonClasses = () => {
+                 let classes = 'transition-all duration-200 hover:scale-105 hover:shadow-xl font-medium backdrop-blur-sm border shadow-lg';
+                 
+                 // 形状
+                 if (style.shape === 'circle') {
+                   classes += ' rounded-full flex items-center justify-center';
+                 } else {
+                   classes += ' rounded-lg';
+                 }
+                 
+                 // 大小
+                 switch (style.size) {
+                   case 'small':
+                     classes += style.shape === 'circle' ? ' w-12 h-12' : ' px-3 py-2 text-xs';
+                     break;
+                   case 'large':
+                     classes += style.shape === 'circle' ? ' w-20 h-20' : ' px-8 py-4 text-base';
+                     break;
+                   case 'medium':
+                   default:
+                     classes += style.shape === 'circle' ? ' w-16 h-16' : ' px-6 py-3 text-sm';
+                     break;
+                 }
+                 
+                 // 动画效果
+                 if (style.animation && style.animation.type !== 'none') {
+                   switch (style.animation.type) {
+                     case 'pulse':
+                       classes += ' animate-custom-pulse';
+                       break;
+                     case 'bounce':
+                       classes += ' animate-bounce';
+                       break;
+                     case 'glow':
+                       classes += ' animate-custom-glow';
+                       break;
+                     case 'ripple':
+                       classes += ' animate-custom-ripple';
+                       break;
+                   }
+                 }
+                 
+                 return classes;
+               };
+               
+               const getButtonStyle = (): React.CSSProperties => {
+                 const buttonStyle: React.CSSProperties = {
+                   color: style.textColor || '#ffffff',
+                   borderColor: style.borderColor || '#ffffff30'
+                 };
+                 
+                 // 透明底色设置
+                 if (style.transparent) {
+                   buttonStyle.backgroundColor = 'transparent';
+                   buttonStyle.border = '2px solid rgba(255, 255, 255, 0.3)';
+                 } else {
+                   buttonStyle.backgroundColor = style.backgroundColor || 'rgba(255, 255, 255, 0.1)';
+                 }
+                 
+                 // 动画相关样式
+                 if (style.animation) {
+                   buttonStyle.animationDuration = `${style.animation.duration || 2}s`;
+                   buttonStyle.animationDelay = `${style.animation.delay || 0}s`;
+                   buttonStyle.animationIterationCount = style.animation.loop ? 'infinite' : '1';
+                 }
+                 
+                 return buttonStyle;
+               };
+               
+               const getLayoutClasses = () => {
+                 if (style.textPosition === 'inside' || style.shape === 'rectangle') {
+                   return 'flex flex-col items-center';
+                 }
+                 
+                 switch (style.textPosition) {
+                   case 'right':
+                     return 'flex flex-row items-center gap-3';
+                   case 'left':
+                     return 'flex flex-row-reverse items-center gap-3';
+                   case 'top':
+                     return 'flex flex-col-reverse items-center gap-2';
+                   case 'bottom':
+                     return 'flex flex-col items-center gap-2';
+                   default:
+                     return 'flex flex-col items-center';
+                 }
+               };
+               
+               const renderButtonContent = () => {
+                 if (style.textPosition === 'inside' || style.shape === 'rectangle') {
+                   return (
+                     <>
+                       <div className="font-bold">{branch.label}</div>
+                       {branch.description && style.shape === 'rectangle' && (
+                         <div className="opacity-70 mt-1 leading-tight text-xs">{branch.description}</div>
+                       )}
+                     </>
+                   );
+                 }
+                 return branch.label.charAt(0).toUpperCase();
+               };
+               
+               const renderExternalText = () => {
+                 if (style.textPosition === 'inside' || style.shape === 'rectangle') {
+                   return null;
+                 }
+                 
+                 return (
+                   <div className="text-center">
+                     <div className="text-white font-bold text-sm drop-shadow-lg">{branch.label}</div>
+                     {branch.description && (
+                       <div className="text-white/90 text-xs mt-1 drop-shadow-lg leading-tight max-w-[120px]">
+                         {branch.description}
+                       </div>
+                     )}
+                   </div>
+                 );
+               };
+               
+               return (
+                 <div
+                   key={branch.id}
+                   className={getPositionClasses()}
+                   style={getCustomOffset()}
+                 >
+                   <div className={getLayoutClasses()}>
+                     <button
+                       onClick={() => selectBranch(branch)}
+                       className={getButtonClasses()}
+                       style={getButtonStyle()}
+                     >
+                       {renderButtonContent()}
+                     </button>
+                     {renderExternalText()}
+                   </div>
+                 </div>
+               );
+             })}
           </div>
         )}
 
