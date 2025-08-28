@@ -1,5 +1,35 @@
 // 互动视频框架类型定义
 
+// 按钮动画配置
+export interface ButtonAnimation {
+  // 动画类型
+  type: 'none' | 'pulse' | 'bounce' | 'glow' | 'ripple';
+  // 动画持续时间（秒）
+  duration?: number;
+  // 动画延迟（秒）
+  delay?: number;
+  // 是否循环
+  loop?: boolean;
+}
+
+// 按钮样式配置
+export interface ButtonStyle {
+  // 按钮形状
+  shape: 'rectangle' | 'circle';
+  // 按钮大小
+  size: 'small' | 'medium' | 'large';
+  // 文字位置（相对于按钮）
+  textPosition: 'inside' | 'right' | 'left' | 'top' | 'bottom';
+  // 自定义颜色
+  backgroundColor?: string;
+  textColor?: string;
+  borderColor?: string;
+  // 动画配置
+  animation?: ButtonAnimation;
+  // 是否透明底色
+  transparent?: boolean;
+}
+
 // 按钮位置配置
 export interface ButtonPosition {
   x: 'left' | 'center' | 'right';
@@ -7,6 +37,30 @@ export interface ButtonPosition {
   // 自定义偏移量（百分比）
   offsetX?: number;
   offsetY?: number;
+}
+
+// 标题配置
+export interface TitleConfig {
+  // 标题文字
+  text: string;
+  // 标题位置
+  position?: {
+    x: 'left' | 'center' | 'right';
+    y: 'top' | 'center' | 'bottom';
+    offsetX?: number;
+    offsetY?: number;
+  };
+  // 标题样式
+  style?: {
+    fontSize?: string;
+    fontWeight?: string;
+    color?: string;
+    backgroundColor?: string;
+    padding?: string;
+    borderRadius?: string;
+    border?: string;
+    backdropBlur?: boolean;
+  };
 }
 
 // 分支选项接口
@@ -17,6 +71,8 @@ export interface BranchOption {
   nextSegmentId: string;
   // 按钮位置配置
   position?: ButtonPosition;
+  // 按钮样式配置
+  style?: ButtonStyle;
 }
 
 // 视频片段接口
@@ -32,6 +88,8 @@ export interface VideoSegment {
   branches?: BranchOption[];
   // 是否为结束片段
   isEnd?: boolean;
+  // 分支选择时的标题配置
+  branchTitle?: TitleConfig;
 }
 
 // 互动视频配置接口
