@@ -29,56 +29,56 @@ export interface TitleStyleConfig {
 // 按钮样式配置接口 - 继承自ButtonStyle
 export interface ButtonStyleConfig extends ButtonStyle {}
 
-// 预设标题样式
+// 预设标题样式 - 使用CSS变量
 export const titleStylePresets: Record<TitleStyleType, TitleStyleConfig> = {
   default: {
-    fontSize: '24px',
-    fontWeight: '700',
-    color: '#ffffff',
-    backgroundColor: 'transparent',
-    padding: '12px 24px',
-    borderRadius: '12px',
-    border: 'none',
+    fontSize: 'var(--iv-title-default-font-size)',
+    fontWeight: 'var(--iv-title-default-font-weight)',
+    color: 'var(--iv-title-default-color)',
+    backgroundColor: 'var(--iv-title-default-bg-color)',
+    padding: 'var(--iv-title-default-padding)',
+    borderRadius: 'var(--iv-title-default-border-radius)',
+    border: 'var(--iv-title-default-border)',
     backdropBlur: false
   },
   forest: {
-    fontSize: '20px',
-    fontWeight: '600',
-    color: '#22c55e',
-    backgroundColor: '#000000dd',
-    padding: '10px 20px',
-    borderRadius: '8px',
-    border: '2px solid #22c55e',
+    fontSize: 'var(--iv-title-forest-font-size)',
+    fontWeight: 'var(--iv-title-forest-font-weight)',
+    color: 'var(--iv-title-forest-color)',
+    backgroundColor: 'var(--iv-title-forest-bg-color)',
+    padding: 'var(--iv-title-forest-padding)',
+    borderRadius: 'var(--iv-title-forest-border-radius)',
+    border: 'var(--iv-title-forest-border)',
     backdropBlur: true
   },
   village: {
-    fontSize: '18px',
-    fontWeight: '500',
-    color: '#3b82f6',
-    backgroundColor: '#000000bb',
-    padding: '8px 16px',
-    borderRadius: '6px',
-    border: '1px solid #3b82f6',
+    fontSize: 'var(--iv-title-village-font-size)',
+    fontWeight: 'var(--iv-title-village-font-weight)',
+    color: 'var(--iv-title-village-color)',
+    backgroundColor: 'var(--iv-title-village-bg-color)',
+    padding: 'var(--iv-title-village-padding)',
+    borderRadius: 'var(--iv-title-village-border-radius)',
+    border: 'var(--iv-title-village-border)',
     backdropBlur: true
   },
   mystery: {
-    fontSize: '22px',
-    fontWeight: '600',
-    color: '#8b5cf6',
-    backgroundColor: '#000000cc',
-    padding: '14px 28px',
-    borderRadius: '10px',
-    border: '2px solid #8b5cf6',
+    fontSize: 'var(--iv-title-mystery-font-size)',
+    fontWeight: 'var(--iv-title-mystery-font-weight)',
+    color: 'var(--iv-title-mystery-color)',
+    backgroundColor: 'var(--iv-title-mystery-bg-color)',
+    padding: 'var(--iv-title-mystery-padding)',
+    borderRadius: 'var(--iv-title-mystery-border-radius)',
+    border: 'var(--iv-title-mystery-border)',
     backdropBlur: true
   },
   elegant: {
-    fontSize: '20px',
-    fontWeight: '500',
-    color: '#f59e0b',
-    backgroundColor: '#00000088',
-    padding: '10px 20px',
-    borderRadius: '15px',
-    border: '1px solid #f59e0b',
+    fontSize: 'var(--iv-title-elegant-font-size)',
+    fontWeight: 'var(--iv-title-elegant-font-weight)',
+    color: 'var(--iv-title-elegant-color)',
+    backgroundColor: 'var(--iv-title-elegant-bg-color)',
+    padding: 'var(--iv-title-elegant-padding)',
+    borderRadius: 'var(--iv-title-elegant-border-radius)',
+    border: 'var(--iv-title-elegant-border)',
     backdropBlur: true
   }
 };
@@ -89,9 +89,9 @@ export const buttonStylePresets: Record<ButtonStyleType, ButtonStyle> = {
     shape: 'circle',
     size: 'large',
     textPosition: 'right',
-    textColor: '#ffffff',
-    backgroundColor: '#ffffff33',
-    borderColor: '#ffffff88',
+    textColor: 'var(--iv-button-circle-large-text-color)',
+    backgroundColor: 'var(--iv-button-circle-large-bg-color)',
+    borderColor: 'var(--iv-button-circle-large-border-color)',
     transparent: false,
     animation: {
       type: 'pulse',
@@ -103,7 +103,9 @@ export const buttonStylePresets: Record<ButtonStyleType, ButtonStyle> = {
     shape: 'circle',
     size: 'medium',
     textPosition: 'bottom',
-    textColor: '#ffffff',
+    textColor: 'var(--iv-button-circle-medium-text-color)',
+    backgroundColor: 'var(--iv-button-circle-medium-bg-color)',
+    borderColor: 'var(--iv-button-circle-medium-border-color)',
     transparent: true,
     animation: {
       type: 'ripple',
@@ -115,7 +117,9 @@ export const buttonStylePresets: Record<ButtonStyleType, ButtonStyle> = {
     shape: 'circle',
     size: 'small',
     textPosition: 'top',
-    textColor: '#ffffff',
+    textColor: 'var(--iv-button-circle-small-text-color)',
+    backgroundColor: 'var(--iv-button-circle-small-bg-color)',
+    borderColor: 'var(--iv-button-circle-small-border-color)',
     transparent: true,
     animation: {
       type: 'pulse',
@@ -127,7 +131,9 @@ export const buttonStylePresets: Record<ButtonStyleType, ButtonStyle> = {
     shape: 'rectangle',
     size: 'medium',
     textPosition: 'inside',
-    textColor: '#ffffff',
+    textColor: 'var(--iv-button-rectangle-text-color)',
+    backgroundColor: 'var(--iv-button-rectangle-bg-color)',
+    borderColor: 'var(--iv-button-rectangle-border-color)',
     transparent: true,
     animation: {
       type: 'bounce',
@@ -139,9 +145,9 @@ export const buttonStylePresets: Record<ButtonStyleType, ButtonStyle> = {
     shape: 'circle',
     size: 'medium',
     textPosition: 'left',
-    textColor: '#ffffff',
-    backgroundColor: '#ffffff22',
-    borderColor: '#ffffff66',
+    textColor: 'var(--iv-button-transparent-text-color)',
+    backgroundColor: 'var(--iv-button-transparent-bg-color)',
+    borderColor: 'var(--iv-button-transparent-border-color)',
     transparent: false,
     animation: {
       type: 'glow',
@@ -178,6 +184,58 @@ export function createAnimation(
   return { type, duration, loop };
 }
 
+// 获取标题样式的Tailwind CSS类名
+export function getTitleStyleClasses(styleType: TitleStyleType): string {
+  const baseClasses = [
+    `text-iv-title-${styleType}`,
+    `bg-iv-title-bg-${styleType}`,
+    `text-iv-title-${styleType}`,
+    `font-iv-title-${styleType}`,
+    `p-iv-title-${styleType}`,
+    `rounded-iv-title-${styleType}`
+  ];
+  
+  // 添加背景模糊类
+  if (styleType !== 'default') {
+    baseClasses.push(`backdrop-blur-iv-title-${styleType}`);
+  }
+  
+  return baseClasses.join(' ');
+}
+
+// 获取标题样式的完整配置（包含CSS类名和内联样式）
+export function getTitleStyleConfig(styleType: TitleStyleType): {
+  className: string;
+  style: TitleStyleConfig;
+} {
+  return {
+    className: getTitleStyleClasses(styleType),
+    style: titleStylePresets[styleType]
+  };
+}
+
+// 获取按钮样式的Tailwind CSS类名
+export function getButtonStyleClasses(styleType: ButtonStyleType): string {
+  const baseClasses = [
+    `text-iv-button-text-${styleType}`,
+    `bg-iv-button-bg-${styleType}`,
+    `border-iv-button-border-${styleType}`
+  ];
+  
+  return baseClasses.join(' ');
+}
+
+// 获取按钮样式的完整配置（包含CSS类名和内联样式）
+export function getButtonStyleConfig(styleType: ButtonStyleType): {
+  className: string;
+  style: ButtonStyle;
+} {
+  return {
+    className: getButtonStyleClasses(styleType),
+    style: buttonStylePresets[styleType]
+  };
+}
+
 // 样式工具类
 export class StyleUtils {
   // 获取标题样式
@@ -190,32 +248,54 @@ export class StyleUtils {
     return createButtonStyle(styleType, overrides);
   }
 
-  // 创建自定义标题样式
+  // 获取标题样式的Tailwind CSS类名
+  static getTitleStyleClasses(styleType: TitleStyleType): string {
+    return getTitleStyleClasses(styleType);
+  }
+
+  // 获取标题样式的完整配置
+  static getTitleStyleConfig(styleType: TitleStyleType) {
+    return getTitleStyleConfig(styleType);
+  }
+
+  // 获取按钮样式的Tailwind CSS类名
+  static getButtonStyleClasses(styleType: ButtonStyleType): string {
+    return getButtonStyleClasses(styleType);
+  }
+
+  // 获取按钮样式的完整配置
+  static getButtonStyleConfig(styleType: ButtonStyleType) {
+    return getButtonStyleConfig(styleType);
+  }
+
+  // 创建自定义标题样式 - 使用CSS变量作为默认值
   static createCustomTitleStyle(config: TitleStyleConfig): TitleStyleConfig {
     return {
-      fontSize: '20px',
-      fontWeight: '600',
-      color: '#ffffff',
-      backgroundColor: 'transparent',
-      padding: '10px 20px',
-      borderRadius: '8px',
-      border: 'none',
+      fontSize: 'var(--iv-title-default-font-size)',
+      fontWeight: 'var(--iv-title-default-font-weight)',
+      color: 'var(--iv-title-default-color)',
+      backgroundColor: 'var(--iv-title-default-bg-color)',
+      padding: 'var(--iv-title-default-padding)',
+      borderRadius: 'var(--iv-title-default-border-radius)',
+      border: 'var(--iv-title-default-border)',
       backdropBlur: false,
       ...config
     };
   }
 
-  // 创建自定义按钮样式
+  // 创建自定义按钮样式 - 使用CSS变量作为默认值
   static createCustomButtonStyle(config: Partial<ButtonStyle>): ButtonStyle {
     return {
       shape: 'circle',
       size: 'medium',
-      textPosition: 'right',
-      textColor: '#ffffff',
+      textPosition: 'bottom',
+      textColor: 'var(--iv-button-circle-medium-text-color)',
+      backgroundColor: 'var(--iv-button-circle-medium-bg-color)',
+      borderColor: 'var(--iv-button-circle-medium-border-color)',
       transparent: true,
       animation: {
-        type: 'pulse',
-        duration: 2,
+        type: 'ripple',
+        duration: 2.5,
         loop: true
       },
       ...config

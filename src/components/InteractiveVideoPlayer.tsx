@@ -218,23 +218,31 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     };
   }, []);
 
-  // 辅助函数：根据配置生成位置样式
+  // 辅助函数：根据配置生成位置样式和类名
   const getPositionStyle = (position: any) => {
-    if (!position) return {};
+    if (!position) return { style: {}, className: '' };
     
     const style: any = {};
+    const classNames: string[] = [];
     
     // 处理水平位置
     switch (position.x) {
       case 'left':
-        style.left = `${position.offsetX || 0}px`;
+        if (position.offsetX) {
+          style.left = `${position.offsetX}px`;
+        } else {
+          classNames.push('left-0');
+        }
         break;
       case 'right':
-        style.right = `${Math.abs(position.offsetX || 0)}px`;
+        if (position.offsetX) {
+          style.right = `${Math.abs(position.offsetX)}px`;
+        } else {
+          classNames.push('right-0');
+        }
         break;
       case 'center':
-        style.left = '50%';
-        style.transform = 'translateX(-50%)';
+        classNames.push('left-1/2', '-translate-x-1/2');
         if (position.offsetX) {
           style.marginLeft = `${position.offsetX}px`;
         }
@@ -244,21 +252,28 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     // 处理垂直位置
     switch (position.y) {
       case 'top':
-        style.top = `${position.offsetY || 0}px`;
+        if (position.offsetY) {
+          style.top = `${position.offsetY}px`;
+        } else {
+          classNames.push('top-0');
+        }
         break;
       case 'bottom':
-        style.bottom = `${Math.abs(position.offsetY || 0)}px`;
+        if (position.offsetY) {
+          style.bottom = `${Math.abs(position.offsetY)}px`;
+        } else {
+          classNames.push('bottom-0');
+        }
         break;
       case 'center':
-        style.top = '50%';
-        style.transform = style.transform ? `${style.transform} translateY(-50%)` : 'translateY(-50%)';
+        classNames.push('top-1/2', '-translate-y-1/2');
         if (position.offsetY) {
           style.marginTop = `${position.offsetY}px`;
         }
         break;
     }
     
-    return style;
+    return { style, className: classNames.join(' ') };
   };
   
   // 辅助函数：根据配置生成按钮样式
@@ -266,16 +281,16 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     if (!style) return {};
     
     const buttonStyle: any = {
-      backgroundColor: style.backgroundColor || (style.transparent ? 'transparent' : '#3b82f6'),
-      color: style.textColor || '#ffffff',
-      border: style.borderColor ? `2px solid ${style.borderColor}` : (style.transparent ? 'none' : '2px solid rgba(255, 255, 255, 0.3)'),
-      backdropFilter: style.transparent ? 'blur(4px)' : 'none',
-      transition: 'all 0.3s ease'
+      backgroundColor: style.backgroundColor || (style.transparent ? 'var(--iv-button-bg-transparent)' : 'var(--iv-button-bg-primary)'),
+      color: style.textColor || 'var(--iv-button-text-primary)',
+      border: style.borderColor ? `2px solid ${style.borderColor}` : (style.transparent ? 'none' : '2px solid var(--iv-button-border-default)'),
+      backdropFilter: style.transparent ? 'var(--iv-button-backdrop-blur)' : 'none',
+      transition: 'var(--iv-transition-default)'
     };
     
     // 处理形状
     if (style.shape === 'circle') {
-      buttonStyle.borderRadius = '50%';
+      buttonStyle.borderRadius = 'var(--iv-button-radius-circle)';
       buttonStyle.width = getSizeValue(style.size);
       buttonStyle.height = getSizeValue(style.size);
       buttonStyle.display = 'flex';
@@ -284,7 +299,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       buttonStyle.minWidth = getSizeValue(style.size);
       buttonStyle.minHeight = getSizeValue(style.size);
     } else {
-      buttonStyle.borderRadius = '8px';
+      buttonStyle.borderRadius = 'var(--iv-button-radius-rect)';
       buttonStyle.padding = getPaddingValue(style.size);
     }
     
@@ -294,20 +309,20 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   // 辅助函数：获取尺寸值
   const getSizeValue = (size: string) => {
     switch (size) {
-      case 'small': return '40px';
-      case 'medium': return '60px';
-      case 'large': return '80px';
-      default: return '60px';
+      case 'small': return 'var(--iv-button-size-small)';
+      case 'medium': return 'var(--iv-button-size-medium)';
+      case 'large': return 'var(--iv-button-size-large)';
+      default: return 'var(--iv-button-size-medium)';
     }
   };
   
   // 辅助函数：获取内边距值
   const getPaddingValue = (size: string) => {
     switch (size) {
-      case 'small': return '8px 16px';
-      case 'medium': return '12px 24px';
-      case 'large': return '16px 32px';
-      default: return '12px 24px';
+      case 'small': return 'var(--iv-button-padding-small)';
+      case 'medium': return 'var(--iv-button-padding-medium)';
+      case 'large': return 'var(--iv-button-padding-large)';
+      default: return 'var(--iv-button-padding-medium)';
     }
   };
   
@@ -341,10 +356,10 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     }
     
     const textStyle: any = {
-      color: style.textColor || '#ffffff',
-      fontSize: '14px',
-      fontWeight: '500',
-      textShadow: '1px 1px 2px rgba(0, 0, 0, 0.8)',
+      color: style.textColor || 'var(--iv-button-text-primary)',
+      fontSize: 'var(--iv-text-size-default)',
+      fontWeight: 'var(--iv-text-weight-default)',
+      textShadow: 'var(--iv-text-shadow-default)',
       whiteSpace: 'nowrap'
     };
     
@@ -358,25 +373,25 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         textPositionStyle.bottom = '100%';
         textPositionStyle.left = '50%';
         textPositionStyle.transform = 'translateX(-50%)';
-        textPositionStyle.marginBottom = '8px';
+        textPositionStyle.marginBottom = 'var(--iv-spacing-sm)';
         break;
       case 'bottom':
         textPositionStyle.top = '100%';
         textPositionStyle.left = '50%';
         textPositionStyle.transform = 'translateX(-50%)';
-        textPositionStyle.marginTop = '8px';
+        textPositionStyle.marginTop = 'var(--iv-spacing-sm)';
         break;
       case 'left':
         textPositionStyle.right = '100%';
         textPositionStyle.top = '50%';
         textPositionStyle.transform = 'translateY(-50%)';
-        textPositionStyle.marginRight = '8px';
+        textPositionStyle.marginRight = 'var(--iv-spacing-sm)';
         break;
       case 'right':
         textPositionStyle.left = '100%';
         textPositionStyle.top = '50%';
         textPositionStyle.transform = 'translateY(-50%)';
-        textPositionStyle.marginLeft = '8px';
+        textPositionStyle.marginLeft = 'var(--iv-spacing-sm)';
         break;
     }
     
@@ -402,31 +417,34 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         {availableBranches.length > 0 && currentSegment && (
           <div className="absolute inset-0 z-10 pointer-events-none">
             {/* 分支标题 */}
-            {currentSegment.branchTitle && (
-              <div
-                className="absolute pointer-events-auto"
-                style={{
-                  ...getPositionStyle(currentSegment.branchTitle.position),
-                  ...currentSegment.branchTitle.style,
-                  backdropFilter: currentSegment.branchTitle.style?.backdropBlur ? 'blur(8px)' : 'none'
-                }}
-              >
-                {currentSegment.branchTitle.text}
-              </div>
-            )}
+            {currentSegment.branchTitle && (() => {
+              const titlePosition = getPositionStyle(currentSegment.branchTitle.position);
+              return (
+                <div
+                  className={`absolute pointer-events-auto ${titlePosition.className}`}
+                  style={{
+                    ...titlePosition.style,
+                    ...currentSegment.branchTitle.style,
+                    backdropFilter: currentSegment.branchTitle.style?.backdropBlur ? 'blur(8px)' : 'none'
+                  }}
+                >
+                  {currentSegment.branchTitle.text}
+                </div>
+              );
+            })()}
             
             {/* 分支按钮 */}
             {availableBranches.map((branch, index) => {
               const buttonStyle = getButtonStyle(branch.style);
-              const positionStyle = getPositionStyle(branch.position);
+              const positionResult = getPositionStyle(branch.position);
               const animationClass = getAnimationClass(branch.style?.animation);
               
               return (
                 <div
                   key={branch.id}
-                  className={`absolute pointer-events-auto ${animationClass}`}
+                  className={`absolute pointer-events-auto ${positionResult.className} ${animationClass}`}
                   style={{
-                    ...positionStyle,
+                    ...positionResult.style,
                     animationDelay: `${index * 0.1}s`
                   }}
                 >
@@ -435,7 +453,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
                     className={`focus:outline-none ${branch.style?.shape === 'circle' ? 'interactive-video-circle-button' : 'interactive-video-rect-button'}`}
                     style={{
                       ...buttonStyle,
-                      transition: 'all 0.3s ease',
+                      transition: 'var(--iv-transition-default)',
                       transform: 'scale(1)',
                       outline: 'none',
                       border: buttonStyle.border || 'none'

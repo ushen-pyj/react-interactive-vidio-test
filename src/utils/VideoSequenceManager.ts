@@ -150,13 +150,21 @@ export class VideoSequenceManager {
       // 连接到输出
       videoNode.connect(this.videoContext.destination);
 
+      // 设置播放时间 - 使用新的seekTime和duration配置
+      const seekTime = segment.seekTime || 0;
+      const endTime = seekTime + segment.duration;
+      
+      videoNode.start(seekTime);
+      videoNode.stop(endTime);
+
       // 等待视频元数据加载完成，然后打印实际时长
       const checkVideoDuration = () => {
         // 尝试从VideoContext获取duration
         if (this.videoContext && this.videoContext.duration) {
           const actualDuration = this.videoContext.duration;
+          console.log(this.videoContext)
           console.log(`🎬 视频实际时长: ${actualDuration.toFixed(2)}秒 (${(actualDuration/60).toFixed(2)}分钟)`);
-          console.log(`📊 配置中的duration: ${segment.duration}秒`);
+          console.log(`📊 配置中的duration: ${segment.duration}秒 ${seekTime} ${endTime}`);
           console.log(`⚠️  时长差异: ${Math.abs(actualDuration - segment.duration).toFixed(2)}秒`);
         } else {
           // 如果还没加载完成，延迟重试
@@ -166,13 +174,6 @@ export class VideoSequenceManager {
       
       // 延迟检查，确保视频元数据已加载
       setTimeout(checkVideoDuration, 500);
-
-      // 设置播放时间 - 使用新的seekTime和duration配置
-      const seekTime = segment.seekTime || 0;
-      const endTime = seekTime + segment.duration;
-      
-      videoNode.start(seekTime);
-      videoNode.stop(endTime);
 
       // 开始播放 - 使用更健壮的错误处理
       this.currentPlayPromise = this.attemptPlay();

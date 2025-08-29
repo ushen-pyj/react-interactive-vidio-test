@@ -5,6 +5,129 @@
   --foreground: #171717;
   --font-geist-sans: 'Geist Sans', system-ui, sans-serif;
   --font-geist-mono: 'Geist Mono', 'Courier New', monospace;
+  
+  /* 交互式视频播放器变量 */
+  /* 按钮颜色 */
+  --iv-button-bg-primary: #3b82f6;
+  --iv-button-bg-transparent: transparent;
+  --iv-button-text-primary: #ffffff;
+  --iv-button-border-default: rgba(255, 255, 255, 0.3);
+  --iv-button-backdrop-blur: blur(4px);
+  
+  /* 按钮尺寸 */
+  --iv-button-size-small: 40px;
+  --iv-button-size-medium: 60px;
+  --iv-button-size-large: 80px;
+  
+  /* 按钮内边距 */
+  --iv-button-padding-small: 8px 16px;
+  --iv-button-padding-medium: 12px 24px;
+  --iv-button-padding-large: 16px 32px;
+  
+  /* 按钮圆角 */
+  --iv-button-radius-rect: 8px;
+  --iv-button-radius-circle: 50%;
+  
+  /* 文本样式 */
+  --iv-text-size-default: 14px;
+  --iv-text-weight-default: 500;
+  --iv-text-shadow-default: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  
+  /* 间距 */
+  --iv-spacing-xs: 4px;
+  --iv-spacing-sm: 8px;
+  --iv-spacing-md: 12px;
+  --iv-spacing-lg: 16px;
+  
+  /* 过渡动画 */
+  --iv-transition-default: all 0.3s ease;
+  
+  /* 标题样式变量 */
+  /* Default 标题样式 */
+  --iv-title-default-font-size: 24px;
+  --iv-title-default-font-weight: 700;
+  --iv-title-default-color: #ffffff;
+  --iv-title-default-bg-color: transparent;
+  --iv-title-default-padding: 12px 24px;
+  --iv-title-default-border-radius: 12px;
+  --iv-title-default-border: none;
+  --iv-title-default-backdrop-blur: none;
+  
+  /* Forest 标题样式 */
+  --iv-title-forest-font-size: 20px;
+  --iv-title-forest-font-weight: 600;
+  --iv-title-forest-color: #22c55e;
+  --iv-title-forest-bg-color: #000000dd;
+  --iv-title-forest-padding: 10px 20px;
+  --iv-title-forest-border-radius: 8px;
+  --iv-title-forest-border: 2px solid #22c55e;
+  --iv-title-forest-backdrop-blur: blur(4px);
+  
+  /* Village 标题样式 */
+  --iv-title-village-font-size: 18px;
+  --iv-title-village-font-weight: 500;
+  --iv-title-village-color: #3b82f6;
+  --iv-title-village-bg-color: #000000bb;
+  --iv-title-village-padding: 8px 16px;
+  --iv-title-village-border-radius: 6px;
+  --iv-title-village-border: 1px solid #3b82f6;
+  --iv-title-village-backdrop-blur: blur(4px);
+  
+  /* Mystery 标题样式 */
+  --iv-title-mystery-font-size: 22px;
+  --iv-title-mystery-font-weight: 600;
+  --iv-title-mystery-color: #8b5cf6;
+  --iv-title-mystery-bg-color: #000000cc;
+  --iv-title-mystery-padding: 14px 28px;
+  --iv-title-mystery-border-radius: 10px;
+  --iv-title-mystery-border: 2px solid #8b5cf6;
+  --iv-title-mystery-backdrop-blur: blur(4px);
+  
+  /* Elegant 标题样式 */
+  --iv-title-elegant-font-size: 20px;
+  --iv-title-elegant-font-weight: 500;
+  --iv-title-elegant-color: #f59e0b;
+  --iv-title-elegant-bg-color: #00000088;
+  --iv-title-elegant-padding: 10px 20px;
+  --iv-title-elegant-border-radius: 15px;
+  --iv-title-elegant-border: 1px solid #f59e0b;
+  --iv-title-elegant-backdrop-blur: blur(4px);
+
+  /* 按钮样式变量 */
+  /* circle-large 按钮样式 */
+  --iv-button-circle-large-text-color: #ffffff;
+  --iv-button-circle-large-bg-color: rgba(255, 255, 255, 0.2);
+  --iv-button-circle-large-border-color: rgba(255, 255, 255, 0.53);
+  --iv-button-circle-large-animation-type: pulse;
+  --iv-button-circle-large-animation-duration: 2s;
+
+  /* circle-medium 按钮样式 */
+  --iv-button-circle-medium-text-color: #ffffff;
+  --iv-button-circle-medium-bg-color: transparent;
+  --iv-button-circle-medium-border-color: transparent;
+  --iv-button-circle-medium-animation-type: ripple;
+  --iv-button-circle-medium-animation-duration: 2.5s;
+
+  /* circle-small 按钮样式 */
+  --iv-button-circle-small-text-color: #ffffff;
+  --iv-button-circle-small-bg-color: rgba(255, 255, 255, 0.2);
+  --iv-button-circle-small-border-color: rgba(255, 255, 255, 0.53);
+  --iv-button-circle-small-animation-type: pulse;
+  --iv-button-circle-small-animation-duration: 1.2s;
+
+  /* rectangle 按钮样式 */
+  --iv-button-rectangle-text-color: #ffffff;
+  --iv-button-rectangle-bg-color: transparent;
+  --iv-button-rectangle-border-color: transparent;
+  --iv-button-rectangle-animation-type: bounce;
+  --iv-button-rectangle-animation-duration: 1s;
+
+  /* transparent 按钮样式 */
+  --iv-button-transparent-text-color: #ffffff;
+  --iv-button-transparent-bg-color: rgba(255, 255, 255, 0.13);
+  --iv-button-transparent-border-color: rgba(255, 255, 255, 0.4);
+  --iv-button-transparent-animation-type: glow;
+  --iv-button-transparent-animation-duration: 1.5s;
 }
 
 @media (prefers-color-scheme: dark) {
