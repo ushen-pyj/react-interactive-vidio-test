@@ -20,6 +20,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 15,
       seekTime: 0,
       branchTriggerTime: 12,
+      backgroundAnimation: {
+        type: 'horizontal',
+        duration: 4,
+        amplitude: 30,
+        enabled: true
+      },
       branchTitle: {
         text: '选择你的冒险路径',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -58,6 +64,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 18,
       seekTime: 15,
       branchTriggerTime: 15,
+      backgroundAnimation: {
+        type: 'vertical',
+        duration: 3.5,
+        amplitude: 25,
+        enabled: true
+      },
       branchTitle: {
         text: '森林深处的神秘声音',
         position: { x: 'left', y: 'top', offsetX: 5, offsetY: 10 },
@@ -104,6 +116,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 20,
       seekTime: 33,
       branchTriggerTime: 17,
+      backgroundAnimation: {
+        type: 'scale',
+        duration: 5,
+        amplitude: 3,
+        enabled: true
+      },
       branchTitle: {
         text: '村庄中的选择',
         position: { x: 'right', y: 'center', offsetX: -5 },
@@ -142,6 +160,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 22,
       seekTime: 53,
       branchTriggerTime: 19,
+      backgroundAnimation: {
+        type: 'horizontal',
+        duration: 6,
+        amplitude: 40,
+        enabled: true
+      },
       branchTitle: {
         text: '山脉的挑战',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -180,6 +204,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 25,
       seekTime: 75,
       branchTriggerTime: 22,
+      backgroundAnimation: {
+        type: 'scale',
+        duration: 4.5,
+        amplitude: 2.5,
+        enabled: true
+      },
       branchTitle: {
         text: '神秘的遭遇',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -218,6 +248,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 20,
       seekTime: 100,
       branchTriggerTime: 17,
+      backgroundAnimation: {
+        type: 'vertical',
+        duration: 3,
+        amplitude: 35,
+        enabled: true
+      },
       branchTitle: {
         text: '森林深处的发现',
         position: { x: 'left', y: 'top', offsetX: 5, offsetY: 10 },
@@ -248,6 +284,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 15,
       seekTime: 120,
       branchTriggerTime: 12,
+      backgroundAnimation: {
+        type: 'horizontal',
+        duration: 2.8,
+        amplitude: 20,
+        enabled: true
+      },
       branchTitle: {
         text: '树顶的视野',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -278,6 +320,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 18,
       seekTime: 135,
       branchTriggerTime: 15,
+      backgroundAnimation: {
+        type: 'scale',
+        duration: 3.5,
+        amplitude: 1.8,
+        enabled: true
+      },
       branchTitle: {
         text: '长者的智慧',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -308,6 +356,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 16,
       seekTime: 153,
       branchTriggerTime: 13,
+      backgroundAnimation: {
+        type: 'horizontal',
+        duration: 4,
+        amplitude: 28,
+        enabled: true
+      },
       branchTitle: {
         text: '市场的奇遇',
         position: { x: 'right', y: 'center', offsetX: -5 },
@@ -338,6 +392,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 24,
       seekTime: 169,
       branchTriggerTime: 21,
+      backgroundAnimation: {
+        type: 'vertical',
+        duration: 5,
+        amplitude: 45,
+        enabled: true
+      },
       branchTitle: {
         text: '山峰的试炼',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -368,6 +428,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 19,
       seekTime: 193,
       branchTriggerTime: 16,
+      backgroundAnimation: {
+        type: 'scale',
+        duration: 3.2,
+        amplitude: 2.2,
+        enabled: true
+      },
       branchTitle: {
         text: '洞穴的秘密',
         position: { x: 'left', y: 'top', offsetX: 5, offsetY: 10 },
@@ -398,6 +464,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       duration: 17,
       seekTime: 212,
       branchTriggerTime: 14,
+      backgroundAnimation: {
+        type: 'horizontal',
+        duration: 3.8,
+        amplitude: 32,
+        enabled: true
+      },
       branchTitle: {
         text: '溪流的指引',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -571,6 +643,12 @@ export const tutorialConfig: InteractiveVideoConfig = {
       duration: 12,
       seekTime: 0,
       branchTriggerTime: 9,
+      backgroundAnimation: {
+        type: 'scale',
+        duration: 2.5,
+        amplitude: 2,
+        enabled: true
+      },
       branchTitle: {
         text: '选择学习路径',
         position: { x: 'center', y: 'top', offsetY: 10 },
@@ -639,6 +717,12 @@ export const tutorialConfig: InteractiveVideoConfig = {
       duration: 18,
       seekTime: 27,
       branchTriggerTime: 15,
+      backgroundAnimation: {
+        type: 'horizontal',
+        duration: 3,
+        amplitude: 15,
+        enabled: true
+      },
       branchTitle: {
         text: '高级功能演示',
         position: { x: 'right', y: 'top', offsetX: -5, offsetY: 10 },

@@ -34,6 +34,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   className = ''
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const backgroundAnimationRef = useRef<HTMLDivElement>(null);
   const videoContextRef = useRef<VideoContextInstance | null>(null);
   const sequenceManagerRef = useRef<VideoSequenceManager | null>(null);
   const currentVideoNodeRef = useRef<VideoNode | null>(null);
@@ -44,6 +45,8 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   const [availableBranches, setAvailableBranches] = useState<BranchOption[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [isVideoContextLoaded, setIsVideoContextLoaded] = useState(false);
+  const [backgroundFrame, setBackgroundFrame] = useState<string | null>(null);
+  const [showBackgroundAnimation, setShowBackgroundAnimation] = useState(false);
 
   // 加载VideoContext库
   useEffect(() => {
@@ -118,6 +121,20 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           setAvailableBranches(branches);
           events?.onBranchTrigger?.(segment, branches);
         },
+        onFrameCapture: (frameData: string, segment: VideoSegment) => {
+          console.log('🖼️ 收到帧捕获回调，片段:', segment.id);
+          console.log('🎨 背景动画配置:', segment.backgroundAnimation);
+          console.log('📊 帧数据长度:', frameData.length);
+          
+          setBackgroundFrame(frameData);
+          if (segment.backgroundAnimation?.enabled) {
+            console.log('✅ 启用背景动画');
+            setShowBackgroundAnimation(true);
+          } else {
+            console.log('❌ 背景动画未启用或配置缺失');
+            setShowBackgroundAnimation(false);
+          }
+        },
         onError: (error: Error) => {
           events?.onError?.(error);
         }
@@ -151,12 +168,17 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
 
   // 选择分支（通过VideoSequenceManager）
   const selectBranch = useCallback(async (option: BranchOption) => {
+    console.log('🎯 选择分支:', option.id);
     if (!sequenceManagerRef.current) {
       console.error('VideoSequenceManager not initialized');
       return;
     }
 
     setAvailableBranches([]);
+    // 重置背景动画状态
+    console.log('🔄 重置背景动画状态');
+    setShowBackgroundAnimation(false);
+    setBackgroundFrame(null);
     events?.onBranchSelect?.(option);
     
     try {
@@ -193,6 +215,32 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       events?.onError?.(error as Error);
     }
   }, [playerState]); // 移除events依赖项
+
+  // 监控背景动画元素样式
+  useEffect(() => {
+    if (backgroundAnimationRef.current && showBackgroundAnimation) {
+      const element = backgroundAnimationRef.current;
+      const computedStyle = window.getComputedStyle(element);
+      
+      console.log('🔍 背景动画元素调试信息:');
+      console.log('  - 元素存在:', !!element);
+      console.log('  - animationName:', computedStyle.animationName);
+      console.log('  - animationDuration:', computedStyle.animationDuration);
+      console.log('  - animationIterationCount:', computedStyle.animationIterationCount);
+      console.log('  - animationPlayState:', computedStyle.animationPlayState);
+      console.log('  - transform:', computedStyle.transform);
+      console.log('  - zIndex:', computedStyle.zIndex);
+      console.log('  - position:', computedStyle.position);
+      
+      // 检查CSS变量
+      const amplitude = computedStyle.getPropertyValue('--amplitude');
+      const scaleMin = computedStyle.getPropertyValue('--scale-min');
+      const scaleMax = computedStyle.getPropertyValue('--scale-max');
+      console.log('  - CSS变量 --amplitude:', amplitude);
+      console.log('  - CSS变量 --scale-min:', scaleMin);
+      console.log('  - CSS变量 --scale-max:', scaleMax);
+    }
+  }, [showBackgroundAnimation, backgroundFrame, currentSegment]);
 
   // 清理定时器和资源
   useEffect(() => {
@@ -339,6 +387,63 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     }
   };
   
+  // 辅助函数：获取背景动画样式
+  const getBackgroundAnimationStyle = (animation: any) => {
+    console.log('🎨 生成背景动画样式，配置:', animation);
+    
+    if (!animation || !animation.enabled) {
+      console.log('❌ 动画未启用');
+      return {};
+    }
+    
+    const duration = animation.duration || 3;
+    const amplitude = animation.amplitude || 20;
+    
+    console.log('⏱️ 动画参数 - 持续时间:', duration, '幅度:', amplitude);
+    
+    const baseStyle = {
+      animationDuration: `${duration}s`,
+      animationIterationCount: 'infinite',
+      animationTimingFunction: 'ease-in-out',
+      animationDirection: 'alternate'
+    };
+    
+    let style: any = {};
+    
+    switch (animation.type) {
+      case 'horizontal':
+        style = {
+          ...baseStyle,
+          animationName: 'backgroundHorizontal',
+          '--amplitude': `${amplitude}px`
+        };
+        console.log('↔️ 水平动画样式:', style);
+        break;
+      case 'vertical':
+        style = {
+          ...baseStyle,
+          animationName: 'backgroundVertical',
+          '--amplitude': `${amplitude}px`
+        };
+        console.log('↕️ 垂直动画样式:', style);
+        break;
+      case 'scale':
+        style = {
+          ...baseStyle,
+          animationName: 'backgroundScale',
+          '--scale-min': `${1 - amplitude * 0.01}`,
+          '--scale-max': `${1 + amplitude * 0.01}`
+        };
+        console.log('🔍 缩放动画样式:', style);
+        break;
+      default:
+        console.log('❌ 未知动画类型:', animation.type);
+        return {};
+    }
+    
+    return style;
+  };
+  
   // 辅助函数：渲染按钮内容
   const renderButtonContent = (branch: BranchOption) => {
     const style = branch.style;
@@ -404,18 +509,82 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
 
   return (
     <div className={`interactive-video-player ${className}`}>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes backgroundHorizontal {
+            0% { transform: translateX(0) scale(1.05); }
+            50% { transform: translateX(var(--amplitude, 20px)) scale(1.05); }
+            100% { transform: translateX(0) scale(1.05); }
+          }
+          @keyframes backgroundVertical {
+            0% { transform: translateY(0) scale(1.05); }
+            50% { transform: translateY(var(--amplitude, 20px)) scale(1.05); }
+            100% { transform: translateY(0) scale(1.05); }
+          }
+          @keyframes backgroundScale {
+            0% { transform: scale(var(--scale-min, 0.98)); }
+            50% { transform: scale(var(--scale-max, 1.02)); }
+            100% { transform: scale(var(--scale-min, 0.98)); }
+          }
+        `
+      }} />
 
       {/* 视频容器 */}
       <div className="video-container relative w-full h-full bg-black rounded-lg overflow-hidden">
+        {/* 背景动画帧 */}
+        {(() => {
+          const shouldShow = showBackgroundAnimation && backgroundFrame && currentSegment?.backgroundAnimation !== undefined;
+          console.log('🎬 背景动画渲染检查:');
+          console.log('  - showBackgroundAnimation:', showBackgroundAnimation);
+          console.log('  - backgroundFrame存在:', !!backgroundFrame);
+          console.log('  - currentSegment存在:', !!currentSegment);
+          console.log('  - backgroundAnimation配置:', currentSegment?.backgroundAnimation);
+          console.log('  - 最终显示:', shouldShow);
+          
+          if (shouldShow) {
+            const animationStyle = getBackgroundAnimationStyle(currentSegment.backgroundAnimation);
+            console.log('🎨 动画样式:', animationStyle);
+          }
+          
+          return shouldShow ? (
+            <div 
+              ref={backgroundAnimationRef}
+              className="absolute inset-0 z-20"
+              style={{
+                backgroundImage: `url(${backgroundFrame})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                filter: 'blur(2px) brightness(0.7)',
+                ...getBackgroundAnimationStyle(currentSegment.backgroundAnimation)
+              }}
+              onAnimationStart={(e) => {
+                console.log('🎬 背景动画开始:', e.animationName);
+              }}
+              onAnimationIteration={(e) => {
+                console.log('🔄 背景动画循环:', e.animationName, '第', e.elapsedTime, '秒');
+              }}
+              onAnimationEnd={(e) => {
+                console.log('🏁 背景动画结束:', e.animationName);
+              }}
+            />
+          ) : null;
+        })()}
+        
         {/* VideoContext Canvas */}
         <canvas
           ref={canvasRef}
-          className="w-full h-full object-cover"
-          style={{ display: 'block' }}
+          className="w-full h-full object-cover relative z-10"
+          style={{ 
+            display: 'block', 
+            backgroundColor: showBackgroundAnimation ? 'transparent' : 'black',
+            // 当有背景动画时，让canvas稍微透明以显示背景
+            opacity: showBackgroundAnimation ? 0.95 : 1
+          }}
         />
         {/* 分支选择覆盖层 - 透明背景，支持配置位置和样式 */}
         {availableBranches.length > 0 && currentSegment && (
-          <div className="absolute inset-0 z-10 pointer-events-none">
+          <div className="absolute inset-0 z-[200] pointer-events-none">
             {/* 分支标题 */}
             {currentSegment.branchTitle && (() => {
               const titlePosition = getPositionStyle(currentSegment.branchTitle.position);
@@ -471,7 +640,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
 
         {/* 加载状态 */}
         {playerState === PlayerState.LOADING && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[150]">
             <div className="text-white text-lg animate-custom-pulse">加载中...</div>
           </div>
         )}
