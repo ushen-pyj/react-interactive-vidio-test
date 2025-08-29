@@ -12,6 +12,18 @@ export interface ButtonAnimation {
   loop?: boolean;
 }
 
+// 背景动画配置
+export interface BackgroundAnimation {
+  // 动画类型
+  type: 'horizontal' | 'vertical' | 'scale';
+  // 动画速度（秒）
+  duration?: number;
+  // 动画幅度（像素或比例）
+  amplitude?: number;
+  // 是否启用
+  enabled?: boolean;
+}
+
 // 按钮样式配置
 export interface ButtonStyle {
   // 按钮形状
@@ -91,6 +103,8 @@ export interface VideoSegment {
   isEnd?: boolean;
   // 分支选择时的标题配置
   branchTitle?: TitleConfig;
+  // 背景动画配置
+  backgroundAnimation?: BackgroundAnimation;
 }
 
 // 互动视频配置接口

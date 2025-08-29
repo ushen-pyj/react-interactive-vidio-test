@@ -40,6 +40,7 @@ export class VideoSequenceManager {
   private onSegmentChange?: (segment: VideoSegment) => void;
   private onBranchTrigger?: (segment: VideoSegment, branches: BranchOption[]) => void;
   private onError?: (error: Error) => void;
+  private onFrameCapture?: (frameData: string, segment: VideoSegment) => void;
 
   constructor(
     config: InteractiveVideoConfig,
@@ -65,11 +66,13 @@ export class VideoSequenceManager {
     onSegmentChange?: (segment: VideoSegment) => void;
     onBranchTrigger?: (segment: VideoSegment, branches: BranchOption[]) => void;
     onError?: (error: Error) => void;
+    onFrameCapture?: (frameData: string, segment: VideoSegment) => void;
   }) {
     this.onStateChange = handlers.onStateChange;
     this.onSegmentChange = handlers.onSegmentChange;
     this.onBranchTrigger = handlers.onBranchTrigger;
     this.onError = handlers.onError;
+    this.onFrameCapture = handlers.onFrameCapture;
   }
 
   // 开始播放序列
@@ -190,12 +193,20 @@ export class VideoSequenceManager {
 
       // 设置分支触发点
       if (segment.branchTriggerTime && segment.branches) {
+        console.log('⏰ 设置分支触发定时器，片段:', segment.id, '触发时间:', segment.branchTriggerTime, '秒');
         const branchTimeout = setTimeout(async () => {
+          console.log('⏰ 分支触发定时器执行，片段:', segment.id);
           if (this.currentSegment?.id === segment.id) {
+            console.log('✅ 当前片段匹配，触发分支选择');
             await this.triggerBranchSelection(segment);
+          } else {
+            console.log('❌ 当前片段不匹配，跳过触发。当前:', this.currentSegment?.id, '期望:', segment.id);
           }
         }, segment.branchTriggerTime * 1000);
         this.pendingTimeouts.add(branchTimeout);
+        console.log('✅ 分支触发定时器已设置，延迟:', segment.branchTriggerTime * 1000, 'ms');
+      } else {
+        console.log('❌ 未设置分支触发定时器 - branchTriggerTime:', segment.branchTriggerTime, 'branches:', segment.branches?.length || 0);
       }
 
       // 设置片段结束处理
@@ -258,22 +269,60 @@ export class VideoSequenceManager {
     this.pendingTimeouts.clear();
   }
 
+  // 获取当前视频帧
+  private captureCurrentFrame(): string | null {
+    if (!this.videoContext) return null;
+    
+    try {
+      // 从VideoContext的canvas获取当前帧
+      const canvas = document.querySelector('canvas');
+      if (canvas && canvas instanceof HTMLCanvasElement) {
+        console.log('📸 正在捕获视频帧...');
+        const frameData = canvas.toDataURL('image/jpeg', 0.8);
+        console.log('✅ 视频帧捕获成功，数据长度:', frameData.length);
+        return frameData;
+      } else {
+        console.warn('❌ 未找到canvas元素或canvas类型不正确');
+      }
+    } catch (error) {
+      console.warn('❌ 捕获视频帧失败:', error);
+    }
+    return null;
+  }
+
   // 触发分支选择
   private async triggerBranchSelection(segment: VideoSegment): Promise<void> {
+    console.log('🎯 触发分支选择，片段:', segment.id);
+    
     if (!segment.branches || segment.branches.length === 0) {
+      console.log('❌ 没有分支选项，跳过');
       return;
+    }
+
+    console.log('🎬 分支数量:', segment.branches.length);
+    console.log('🎨 背景动画配置:', segment.backgroundAnimation);
+
+    // 获取当前帧图片
+    const frameData = this.captureCurrentFrame();
+    if (frameData) {
+      console.log('✅ 帧数据获取成功，触发 onFrameCapture 回调');
+      this.onFrameCapture?.(frameData, segment);
+    } else {
+      console.warn('❌ 帧数据获取失败');
     }
 
     // 暂停视频 - 使用 async/await 确保暂停完成
     try {
       if (this.videoContext && this.isPlaying) {
+        console.log('⏸️ 暂停视频播放');
         await this.videoContext.pause();
         this.isPlaying = false;
       }
       this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
       this.onBranchTrigger?.(segment, segment.branches);
+      console.log('✅ 分支选择界面已显示');
     } catch (error) {
-      console.warn('Error pausing for branch trigger in VideoSequenceManager:', error);
+      console.warn('❌ 暂停视频时出错:', error);
       // 即使暂停失败，也要显示分支选择
       this.isPlaying = false;
       this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
