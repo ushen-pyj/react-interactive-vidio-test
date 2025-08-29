@@ -29,6 +29,12 @@ export class VideoSequenceManager {
   private preloadedNodes: Map<string, VideoNode> = new Map();
   private sequenceConfig: SequenceManagerConfig;
   
+  // 播放状态管理
+  private isPlaying: boolean = false;
+  private isTransitioning: boolean = false;
+  private currentPlayPromise: Promise<void> | null = null;
+  private pendingTimeouts: Set<NodeJS.Timeout> = new Set();
+  
   // 事件回调
   private onStateChange?: (state: PlayerState) => void;
   private onSegmentChange?: (segment: VideoSegment) => void;
@@ -80,11 +86,38 @@ export class VideoSequenceManager {
     }
   }
 
+  // 通过ID播放片段
+  async playSegmentById(segmentId: string): Promise<void> {
+    const segment = this.getSegmentById(segmentId);
+    if (!segment) {
+      throw new Error(`Segment not found: ${segmentId}`);
+    }
+    await this.playSegment(segment);
+  }
+
   // 播放指定片段
   async playSegment(segment: VideoSegment): Promise<void> {
     if (!this.videoContext) {
       throw new Error('VideoContext not initialized');
     }
+
+    // 防止并发播放请求
+    if (this.isTransitioning) {
+      console.warn('Segment transition already in progress, ignoring request');
+      return;
+    }
+
+    // 如果有正在进行的播放请求，等待其完成
+    if (this.currentPlayPromise) {
+      try {
+        await this.currentPlayPromise;
+      } catch (error) {
+        console.warn('Previous play promise failed:', error);
+      }
+    }
+
+    this.isTransitioning = true;
+    this.clearPendingTimeouts();
 
     try {
       this.onStateChange?.(PlayerState.LOADING);
@@ -92,6 +125,7 @@ export class VideoSequenceManager {
       // 先停止当前播放，避免播放请求冲突
       try {
         await this.videoContext.pause();
+        this.isPlaying = false;
         // 给一个短暂的延迟确保停止完成
         await new Promise(resolve => setTimeout(resolve, 100));
       } catch (pauseError) {
@@ -116,42 +150,37 @@ export class VideoSequenceManager {
       // 连接到输出
       videoNode.connect(this.videoContext.destination);
 
-      // 设置播放时间
-      const startTime = segment.startTime || 0;
-      const endTime = segment.endTime || segment.duration;
+      // 等待视频元数据加载完成，然后打印实际时长
+      const checkVideoDuration = () => {
+        // 尝试从VideoContext获取duration
+        if (this.videoContext && this.videoContext.duration) {
+          const actualDuration = this.videoContext.duration;
+          console.log(`🎬 视频实际时长: ${actualDuration.toFixed(2)}秒 (${(actualDuration/60).toFixed(2)}分钟)`);
+          console.log(`📊 配置中的duration: ${segment.duration}秒`);
+          console.log(`⚠️  时长差异: ${Math.abs(actualDuration - segment.duration).toFixed(2)}秒`);
+        } else {
+          // 如果还没加载完成，延迟重试
+          setTimeout(checkVideoDuration, 100);
+        }
+      };
       
-      videoNode.start(startTime);
+      // 延迟检查，确保视频元数据已加载
+      setTimeout(checkVideoDuration, 500);
+
+      // 设置播放时间 - 使用新的seekTime和duration配置
+      const seekTime = segment.seekTime || 0;
+      const endTime = seekTime + segment.duration;
+      
+      videoNode.start(seekTime);
       videoNode.stop(endTime);
 
       // 开始播放 - 使用更健壮的错误处理
-      let playAttempts = 0;
-      const maxPlayAttempts = 3;
+      this.currentPlayPromise = this.attemptPlay();
+      await this.currentPlayPromise;
       
-      while (playAttempts < maxPlayAttempts) {
-        try {
-          await this.videoContext.play();
-          this.onStateChange?.(PlayerState.PLAYING);
-          break; // 播放成功，退出重试循环
-        } catch (playError: any) {
-          playAttempts++;
-          
-          if (playError.name === 'AbortError') {
-            console.warn(`Play request was interrupted in VideoSequenceManager (attempt ${playAttempts}/${maxPlayAttempts})`);
-            
-            if (playAttempts < maxPlayAttempts) {
-              // 递增延迟重试
-              await new Promise(resolve => setTimeout(resolve, 50 * playAttempts));
-              continue;
-            } else {
-              console.error('Max play attempts reached, giving up');
-              throw new Error('Failed to start playback after multiple attempts');
-            }
-          } else {
-            // 非AbortError，直接抛出
-            throw playError;
-          }
-        }
-      }
+      this.isPlaying = true;
+      this.isTransitioning = false;
+      this.onStateChange?.(PlayerState.PLAYING);
 
       // 预加载下一个可能的片段
       if (this.sequenceConfig.preloadNext) {
@@ -160,19 +189,72 @@ export class VideoSequenceManager {
 
       // 设置分支触发点
       if (segment.branchTriggerTime && segment.branches) {
-        setTimeout(async () => {
-          await this.triggerBranchSelection(segment);
+        const branchTimeout = setTimeout(async () => {
+          if (this.currentSegment?.id === segment.id) {
+            await this.triggerBranchSelection(segment);
+          }
         }, segment.branchTriggerTime * 1000);
+        this.pendingTimeouts.add(branchTimeout);
       }
 
       // 设置片段结束处理
-      setTimeout(() => {
-        this.handleSegmentEnd(segment);
-      }, (endTime - startTime) * 1000);
+      const endTimeout = setTimeout(() => {
+        if (this.currentSegment?.id === segment.id) {
+          this.handleSegmentEnd(segment);
+        }
+      }, segment.duration * 1000);
+      this.pendingTimeouts.add(endTimeout);
 
     } catch (error) {
+      this.isTransitioning = false;
+      this.currentPlayPromise = null;
       this.handleError(error as Error);
+    } finally {
+      this.currentPlayPromise = null;
     }
+  }
+
+  // 尝试播放视频的辅助方法
+  private async attemptPlay(): Promise<void> {
+    if (!this.videoContext) {
+      throw new Error('VideoContext not initialized');
+    }
+
+    let playAttempts = 0;
+    const maxPlayAttempts = 3;
+    
+    while (playAttempts < maxPlayAttempts) {
+      try {
+        await this.videoContext.play();
+        return; // 播放成功，退出
+      } catch (playError: any) {
+        playAttempts++;
+        
+        if (playError.name === 'AbortError') {
+          console.warn(`Play request was interrupted (attempt ${playAttempts}/${maxPlayAttempts})`);
+          
+          if (playAttempts < maxPlayAttempts) {
+            // 递增延迟重试
+            await new Promise(resolve => setTimeout(resolve, 50 * playAttempts));
+            continue;
+          } else {
+            console.error('Max play attempts reached, giving up');
+            throw new Error('Failed to start playback after multiple attempts');
+          }
+        } else {
+          // 非AbortError，直接抛出
+          throw playError;
+        }
+      }
+    }
+  }
+
+  // 清理待处理的定时器
+  private clearPendingTimeouts(): void {
+    this.pendingTimeouts.forEach(timeout => {
+      clearTimeout(timeout);
+    });
+    this.pendingTimeouts.clear();
   }
 
   // 触发分支选择
@@ -183,14 +265,16 @@ export class VideoSequenceManager {
 
     // 暂停视频 - 使用 async/await 确保暂停完成
     try {
-      if (this.videoContext) {
+      if (this.videoContext && this.isPlaying) {
         await this.videoContext.pause();
+        this.isPlaying = false;
       }
       this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
       this.onBranchTrigger?.(segment, segment.branches);
     } catch (error) {
       console.warn('Error pausing for branch trigger in VideoSequenceManager:', error);
       // 即使暂停失败，也要显示分支选择
+      this.isPlaying = false;
       this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
       this.onBranchTrigger?.(segment, segment.branches);
     }
@@ -353,6 +437,49 @@ export class VideoSequenceManager {
     return this.currentSegment;
   }
 
+  // 播放控制方法
+  async play(): Promise<void> {
+    if (!this.videoContext) {
+      throw new Error('VideoContext not initialized');
+    }
+
+    if (this.isPlaying || this.isTransitioning) {
+      console.warn('Video is already playing or transitioning');
+      return;
+    }
+
+    try {
+      await this.attemptPlay();
+      this.isPlaying = true;
+      this.onStateChange?.(PlayerState.PLAYING);
+    } catch (error: any) {
+      console.error('Error playing video:', error);
+      this.handleError(error);
+    }
+  }
+
+  async pause(): Promise<void> {
+    if (!this.videoContext) {
+      throw new Error('VideoContext not initialized');
+    }
+
+    if (!this.isPlaying) {
+      console.warn('Video is not currently playing');
+      return;
+    }
+
+    try {
+      await this.videoContext.pause();
+      this.isPlaying = false;
+      this.onStateChange?.(PlayerState.PAUSED);
+    } catch (error: any) {
+      console.warn('Error pausing video:', error);
+      // 即使暂停失败，也要更新状态
+      this.isPlaying = false;
+      this.onStateChange?.(PlayerState.PAUSED);
+    }
+  }
+
   // 错误处理
   private handleError(error: Error): void {
     console.error('VideoSequenceManager error:', error);
@@ -362,6 +489,9 @@ export class VideoSequenceManager {
 
   // 清理资源
   dispose(): void {
+    // 清理所有待处理的定时器
+    this.clearPendingTimeouts();
+    
     // 清理预加载的节点
     this.preloadedNodes.clear();
     
@@ -371,6 +501,9 @@ export class VideoSequenceManager {
     // 重置状态
     this.currentSegment = null;
     this.videoContext = null;
+    this.isPlaying = false;
+    this.isTransitioning = false;
+    this.currentPlayPromise = null;
   }
 }
 

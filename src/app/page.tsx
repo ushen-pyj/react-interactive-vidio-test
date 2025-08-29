@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import InteractiveVideoPlayer from '../components/InteractiveVideoPlayer';
+import BranchTree from '../components/BranchTree';
 import { availableConfigs } from '../data/sampleVideoConfig';
 import { InteractiveVideoConfig, PlayerState } from '../types/interactive-video';
 
@@ -72,7 +73,7 @@ export default function Home() {
 
           {/* 播放历史 */}
           {playbackHistory.length > 0 && (
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
               <h3 className="text-lg font-semibold mb-4 text-gray-800">播放历史</h3>
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {playbackHistory.map((entry, index) => (
@@ -83,6 +84,9 @@ export default function Home() {
               </div>
             </div>
           )}
+
+          {/* 分支结构图 */}
+          <BranchTree config={selectedConfig} />
         </div>
       </div>
     );
