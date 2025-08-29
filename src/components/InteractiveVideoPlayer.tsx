@@ -36,6 +36,9 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   const videoContextRef = useRef<VideoContextInstance | null>(null);
   const currentVideoNodeRef = useRef<VideoNode | null>(null);
   const timeUpdateIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const branchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const endTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const playbackStateRef = useRef<'idle' | 'playing' | 'paused' | 'transitioning'>('idle');
   
   const [playerState, setPlayerState] = useState<PlayerState>(PlayerState.IDLE);
   const [currentSegment, setCurrentSegment] = useState<VideoSegment | null>(null);
@@ -102,7 +105,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   }, [isVideoContextLoaded, config]);
 
   // 播放指定片段
-  const playSegment = useCallback((segmentId: string) => {
+  const playSegment = useCallback(async (segmentId: string) => {
     const segment = config.segments.find(s => s.id === segmentId);
     if (!segment || !videoContextRef.current) {
       console.error('Segment not found or VideoContext not initialized:', segmentId);
@@ -110,13 +113,18 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     }
 
     try {
+      playbackStateRef.current = 'transitioning';
       setPlayerState(PlayerState.LOADING);
       setCurrentSegment(segment);
       events?.onSegmentStart?.(segment);
 
-      // 停止当前视频
-      if (currentVideoNodeRef.current) {
-        // VideoContext会自动处理节点的停止
+      // 停止当前视频并等待停止完成
+      try {
+        await videoContextRef.current.pause();
+        // 给一个短暂的延迟确保停止完成
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (pauseError) {
+        console.warn('Error pausing previous video:', pauseError);
       }
 
       // 创建新的视频节点
@@ -133,44 +141,89 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       videoNode.start(startTime);
       videoNode.stop(endTime);
 
-      // 开始播放
-      videoContextRef.current.play();
-      setPlayerState(PlayerState.PLAYING);
+      // 开始播放 - 使用更健壮的错误处理
+      let playAttempts = 0;
+      const maxPlayAttempts = 3;
+      
+      while (playAttempts < maxPlayAttempts) {
+        try {
+          await videoContextRef.current.play();
+          setPlayerState(PlayerState.PLAYING);
+          playbackStateRef.current = 'playing';
+          break; // 播放成功，退出重试循环
+        } catch (playError: any) {
+          playAttempts++;
+          
+          if (playError.name === 'AbortError') {
+            console.warn(`Play request was interrupted (attempt ${playAttempts}/${maxPlayAttempts})`);
+            
+            if (playAttempts < maxPlayAttempts) {
+              // 递增延迟重试
+              await new Promise(resolve => setTimeout(resolve, 50 * playAttempts));
+              continue;
+            } else {
+              console.error('Max play attempts reached, giving up');
+              playbackStateRef.current = 'idle';
+              throw new Error('Failed to start playback after multiple attempts');
+            }
+          } else {
+            // 非AbortError，直接抛出
+            playbackStateRef.current = 'idle';
+            throw playError;
+          }
+        }
+      }
+
+      // 清理之前的定时器
+      if (branchTimeoutRef.current) {
+        clearTimeout(branchTimeoutRef.current);
+        branchTimeoutRef.current = null;
+      }
+      if (endTimeoutRef.current) {
+        clearTimeout(endTimeoutRef.current);
+        endTimeoutRef.current = null;
+      }
 
       // 设置分支触发点监听
       if (segment.branchTriggerTime && segment.branches) {
-        const triggerTimeout = setTimeout(() => {
-          handleBranchTrigger(segment);
+        branchTimeoutRef.current = setTimeout(async () => {
+          await handleBranchTrigger(segment);
         }, segment.branchTriggerTime * 1000);
-
-        // 清理之前的定时器
-        return () => clearTimeout(triggerTimeout);
       }
 
       // 设置片段结束监听
-      const endTimeout = setTimeout(() => {
+      endTimeoutRef.current = setTimeout(() => {
         handleSegmentEnd(segment);
       }, (endTime - startTime) * 1000);
-
-      return () => clearTimeout(endTimeout);
     } catch (error) {
       console.error('Error playing segment:', error);
+      playbackStateRef.current = 'idle';
       setPlayerState(PlayerState.ERROR);
       events?.onError?.(error as Error);
     }
   }, [config, events]);
 
   // 处理分支触发
-  const handleBranchTrigger = useCallback((segment: VideoSegment) => {
+  const handleBranchTrigger = useCallback(async (segment: VideoSegment) => {
     if (!segment.branches || segment.branches.length === 0) {
       return;
     }
 
-    // 暂停视频
-    videoContextRef.current?.pause();
-    setPlayerState(PlayerState.WAITING_FOR_CHOICE);
-    setAvailableBranches(segment.branches);
-    events?.onBranchTrigger?.(segment, segment.branches);
+    // 暂停视频 - 使用 async/await 确保暂停完成
+    try {
+      if (videoContextRef.current) {
+        await videoContextRef.current.pause();
+      }
+      setPlayerState(PlayerState.WAITING_FOR_CHOICE);
+      setAvailableBranches(segment.branches);
+      events?.onBranchTrigger?.(segment, segment.branches);
+    } catch (error) {
+      console.warn('Error pausing for branch trigger:', error);
+      // 即使暂停失败，也要显示分支选择
+      setPlayerState(PlayerState.WAITING_FOR_CHOICE);
+      setAvailableBranches(segment.branches);
+      events?.onBranchTrigger?.(segment, segment.branches);
+    }
   }, [events]);
 
   // 处理片段结束
@@ -193,24 +246,63 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   }, [config, events, playSegment]);
 
   // 选择分支
-  const selectBranch = useCallback((option: BranchOption) => {
+  const selectBranch = useCallback(async (option: BranchOption) => {
     setAvailableBranches([]);
     events?.onBranchSelect?.(option);
-    playSegment(option.nextSegmentId);
+    await playSegment(option.nextSegmentId);
   }, [events, playSegment]);
 
-  // 播放控制
-  const play = useCallback(() => {
-    if (videoContextRef.current && playerState === PlayerState.PAUSED) {
-      videoContextRef.current.play();
-      setPlayerState(PlayerState.PLAYING);
+  // 播放控制 - 添加防抖机制和重试逻辑
+  const play = useCallback(async () => {
+    if (videoContextRef.current && playerState === PlayerState.PAUSED && playbackStateRef.current !== 'transitioning') {
+      playbackStateRef.current = 'transitioning';
+      
+      let playAttempts = 0;
+      const maxPlayAttempts = 2; // 对于用户手动播放，减少重试次数
+      
+      while (playAttempts < maxPlayAttempts) {
+        try {
+          await videoContextRef.current.play();
+          setPlayerState(PlayerState.PLAYING);
+          playbackStateRef.current = 'playing';
+          break; // 播放成功，退出重试循环
+        } catch (error: any) {
+          playAttempts++;
+          
+          if (error.name === 'AbortError') {
+            if (playAttempts < maxPlayAttempts) {
+              console.warn(`Play request was interrupted, retrying... (attempt ${playAttempts}/${maxPlayAttempts})`);
+              await new Promise(resolve => setTimeout(resolve, 30 * playAttempts));
+              continue;
+            } else {
+              console.warn('Play request was interrupted multiple times, giving up');
+              playbackStateRef.current = 'paused';
+              break;
+            }
+          } else {
+            console.error('Error playing video:', error);
+            playbackStateRef.current = 'paused';
+            events?.onError?.(error);
+            break;
+          }
+        }
+      }
     }
-  }, [playerState]);
+  }, [playerState, events]);
 
-  const pause = useCallback(() => {
-    if (videoContextRef.current && playerState === PlayerState.PLAYING) {
-      videoContextRef.current.pause();
-      setPlayerState(PlayerState.PAUSED);
+  const pause = useCallback(async () => {
+    if (videoContextRef.current && playerState === PlayerState.PLAYING && playbackStateRef.current !== 'transitioning') {
+      playbackStateRef.current = 'transitioning';
+      try {
+        await videoContextRef.current.pause();
+        setPlayerState(PlayerState.PAUSED);
+        playbackStateRef.current = 'paused';
+      } catch (error: any) {
+        playbackStateRef.current = 'paused';
+        console.warn('Error pausing video:', error);
+        // 即使暂停失败，也要更新状态
+        setPlayerState(PlayerState.PAUSED);
+      }
     }
   }, [playerState]);
 
@@ -218,6 +310,31 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   useEffect(() => {
     events?.onStateChange?.(playerState);
   }, [playerState, events]);
+
+  // 清理定时器和资源
+  useEffect(() => {
+    return () => {
+      // 清理所有定时器
+      if (branchTimeoutRef.current) {
+        clearTimeout(branchTimeoutRef.current);
+      }
+      if (endTimeoutRef.current) {
+        clearTimeout(endTimeoutRef.current);
+      }
+      if (timeUpdateIntervalRef.current) {
+        clearInterval(timeUpdateIntervalRef.current);
+      }
+      
+      // 停止视频播放
+      if (videoContextRef.current) {
+        try {
+          videoContextRef.current.pause();
+        } catch (error) {
+          console.warn('Error pausing video during cleanup:', error);
+        }
+      }
+    };
+  }, []);
 
   return (
     <div className={`interactive-video-player ${className}`}>

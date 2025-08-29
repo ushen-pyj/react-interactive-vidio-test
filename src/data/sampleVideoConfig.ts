@@ -1,5 +1,7 @@
 import { InteractiveVideoConfig } from '../types/interactive-video';
 
+const tempVidio = "/assest/BigBuckBunny.mp4"
+
 // 示例互动视频配置 - 冒险故事
 export const adventureStoryConfig: InteractiveVideoConfig = {
   id: 'adventure-story-demo',
@@ -15,7 +17,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
   segments: [
     {
       id: 'intro',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 10,
       startTime: 0,
       endTime: 10,
@@ -69,7 +71,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'forest-path',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 15,
       startTime: 0,
       endTime: 15,
@@ -138,7 +140,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'village-path',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 12,
       startTime: 0,
       endTime: 12,
@@ -174,7 +176,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'mystery-encounter',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 20,
       startTime: 0,
       endTime: 20,
@@ -196,7 +198,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'safe-path',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
       startTime: 0,
       endTime: 8,
@@ -204,7 +206,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'elder-wisdom',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 15,
       startTime: 0,
       endTime: 15,
@@ -226,7 +228,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'village-secrets',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 10,
       startTime: 0,
       endTime: 10,
@@ -234,7 +236,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'heroic-ending',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 12,
       startTime: 0,
       endTime: 12,
@@ -242,7 +244,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'collaborative-ending',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
+      videoUrl: '/assest/ElephantsDream.mp4',
       duration: 10,
       startTime: 0,
       endTime: 10,
@@ -250,7 +252,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'wise-ending',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
       startTime: 0,
       endTime: 8,
@@ -258,7 +260,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'independent-ending',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 6,
       startTime: 0,
       endTime: 6,
@@ -282,7 +284,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
   segments: [
     {
       id: 'tutorial-start',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 5,
       startTime: 0,
       endTime: 5,
@@ -304,7 +306,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
     },
     {
       id: 'basics-lesson',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
       startTime: 0,
       endTime: 8,
@@ -312,7 +314,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
     },
     {
       id: 'advanced-lesson',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 10,
       startTime: 0,
       endTime: 10,
@@ -334,7 +336,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
     },
     {
       id: 'practice-session',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 6,
       startTime: 0,
       endTime: 6,
@@ -342,7 +344,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
     },
     {
       id: 'tutorial-end',
-      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 4,
       startTime: 0,
       endTime: 4,

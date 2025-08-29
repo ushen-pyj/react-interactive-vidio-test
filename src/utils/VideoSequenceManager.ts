@@ -89,6 +89,15 @@ export class VideoSequenceManager {
     try {
       this.onStateChange?.(PlayerState.LOADING);
       
+      // 先停止当前播放，避免播放请求冲突
+      try {
+        await this.videoContext.pause();
+        // 给一个短暂的延迟确保停止完成
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (pauseError) {
+        console.warn('Error pausing previous playback in VideoSequenceManager:', pauseError);
+      }
+      
       // 记录播放历史
       if (this.sequenceConfig.enableHistory) {
         this.addToHistory(segment.id);
@@ -114,9 +123,35 @@ export class VideoSequenceManager {
       videoNode.start(startTime);
       videoNode.stop(endTime);
 
-      // 开始播放
-      this.videoContext.play();
-      this.onStateChange?.(PlayerState.PLAYING);
+      // 开始播放 - 使用更健壮的错误处理
+      let playAttempts = 0;
+      const maxPlayAttempts = 3;
+      
+      while (playAttempts < maxPlayAttempts) {
+        try {
+          await this.videoContext.play();
+          this.onStateChange?.(PlayerState.PLAYING);
+          break; // 播放成功，退出重试循环
+        } catch (playError: any) {
+          playAttempts++;
+          
+          if (playError.name === 'AbortError') {
+            console.warn(`Play request was interrupted in VideoSequenceManager (attempt ${playAttempts}/${maxPlayAttempts})`);
+            
+            if (playAttempts < maxPlayAttempts) {
+              // 递增延迟重试
+              await new Promise(resolve => setTimeout(resolve, 50 * playAttempts));
+              continue;
+            } else {
+              console.error('Max play attempts reached, giving up');
+              throw new Error('Failed to start playback after multiple attempts');
+            }
+          } else {
+            // 非AbortError，直接抛出
+            throw playError;
+          }
+        }
+      }
 
       // 预加载下一个可能的片段
       if (this.sequenceConfig.preloadNext) {
@@ -125,8 +160,8 @@ export class VideoSequenceManager {
 
       // 设置分支触发点
       if (segment.branchTriggerTime && segment.branches) {
-        setTimeout(() => {
-          this.triggerBranchSelection(segment);
+        setTimeout(async () => {
+          await this.triggerBranchSelection(segment);
         }, segment.branchTriggerTime * 1000);
       }
 
@@ -141,15 +176,24 @@ export class VideoSequenceManager {
   }
 
   // 触发分支选择
-  private triggerBranchSelection(segment: VideoSegment): void {
+  private async triggerBranchSelection(segment: VideoSegment): Promise<void> {
     if (!segment.branches || segment.branches.length === 0) {
       return;
     }
 
-    // 暂停视频
-    this.videoContext?.pause();
-    this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
-    this.onBranchTrigger?.(segment, segment.branches);
+    // 暂停视频 - 使用 async/await 确保暂停完成
+    try {
+      if (this.videoContext) {
+        await this.videoContext.pause();
+      }
+      this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
+      this.onBranchTrigger?.(segment, segment.branches);
+    } catch (error) {
+      console.warn('Error pausing for branch trigger in VideoSequenceManager:', error);
+      // 即使暂停失败，也要显示分支选择
+      this.onStateChange?.(PlayerState.WAITING_FOR_CHOICE);
+      this.onBranchTrigger?.(segment, segment.branches);
+    }
   }
 
   // 选择分支
