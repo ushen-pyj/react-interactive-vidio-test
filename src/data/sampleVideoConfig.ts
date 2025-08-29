@@ -35,6 +35,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'path-forest',
           label: '森林',
+          text: '森林',
           description: '选择这条路径将带你深入未知的森林深处',
           nextSegmentId: 'forest-path',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -43,6 +44,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'path-village',
           label: '村庄',
+          text: '村庄',
           description: '选择这条安全的路径前往村庄寻求帮助',
           nextSegmentId: 'village-path',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -51,6 +53,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'path-mountain',
           label: '山脉',
+          text: '山脉',
           description: '选择这条危险的路径前往神秘的山脉',
           nextSegmentId: 'mountain-path',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -60,7 +63,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'forest-path',
-      videoUrl: '/assest/BigBuckBunny.mp4',
+      videoUrl: '/assest/ElephantsDream.mp4',
       duration: 18,
       seekTime: 15,
       branchTriggerTime: 15,
@@ -79,6 +82,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'investigate-sound',
           label: '调查声音',
+          text: '调查声音',
           description: '你听到了森林深处传来的神秘声音',
           nextSegmentId: 'mystery-encounter',
           position: { x: 'center', y: 'top', offsetY: 15 },
@@ -87,6 +91,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'ignore-sound',
           label: '继续前进',
+          text: '继续前进',
           description: '保持谨慎，继续沿着小径前进',
           nextSegmentId: 'deep-forest',
           position: { x: 'left', y: 'center', offsetX: 10 },
@@ -95,6 +100,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'return-back',
           label: '返回',
+          text: '返回',
           description: '感到害怕，决定返回安全的地方',
           nextSegmentId: 'village-path',
           position: { x: 'right', y: 'center', offsetX: -10 },
@@ -103,6 +109,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'climb-tree',
           label: '爬树观察',
+          text: '爬树观察',
           description: '爬到高处观察周围的情况',
           nextSegmentId: 'tree-view',
           position: { x: 'center', y: 'bottom', offsetY: -10 },
@@ -131,6 +138,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'talk-elder',
           label: '与村长交谈',
+          text: '与村长交谈',
           description: '寻求村中长者的智慧和建议',
           nextSegmentId: 'elder-wisdom',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -139,6 +147,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'explore-village',
           label: '探索村庄',
+          text: '探索村庄',
           description: '四处走走，了解这个村庄的秘密',
           nextSegmentId: 'village-secrets',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -147,6 +156,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'visit-market',
           label: '前往市场',
+          text: '前往市场',
           description: '去村庄的市场看看有什么有用的物品',
           nextSegmentId: 'market-encounter',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -175,6 +185,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'climb-peak',
           label: '攀登山峰',
+          text: '攀登山峰',
           description: '挑战自己，攀登到山峰顶部',
           nextSegmentId: 'peak-challenge',
           position: { x: 'left', y: 'center', offsetX: 5 },
@@ -183,6 +194,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'find-cave',
           label: '寻找洞穴',
+          text: '寻找洞穴',
           description: '在山中寻找可以休息的洞穴',
           nextSegmentId: 'cave-discovery',
           position: { x: 'right', y: 'center', offsetX: -5 },
@@ -191,6 +203,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'follow-stream',
           label: '沿溪流而下',
+          text: '沿溪流而下',
           description: '跟随山间的溪流寻找出路',
           nextSegmentId: 'stream-path',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -219,6 +232,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'accept-challenge',
           label: '接受挑战',
+          text: '接受挑战',
           description: '勇敢地面对未知的挑战',
           nextSegmentId: 'heroic-ending',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -227,6 +241,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'seek-help',
           label: '寻求帮助',
+          text: '寻求帮助',
           description: '意识到需要更多帮助来解决这个问题',
           nextSegmentId: 'collaborative-ending',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -235,6 +250,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'negotiate',
           label: '尝试谈判',
+          text: '尝试谈判',
           description: '用智慧和言语来解决冲突',
           nextSegmentId: 'diplomatic-ending',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -263,6 +279,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'ancient-ruins',
           label: '探索古迹',
+          text: '探索古迹',
           description: '发现了古老的遗迹，决定进入探索',
           nextSegmentId: 'ruins-ending',
           position: { x: 'center', y: 'center' },
@@ -271,6 +288,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'magical-spring',
           label: '神奇泉水',
+          text: '神奇泉水',
           description: '找到了传说中的神奇泉水',
           nextSegmentId: 'spring-ending',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -299,6 +317,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'spot-treasure',
           label: '发现宝藏',
+          text: '发现宝藏',
           description: '从高处看到了闪闪发光的宝藏',
           nextSegmentId: 'treasure-ending',
           position: { x: 'left', y: 'center', offsetX: 5 },
@@ -307,6 +326,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'see-danger',
           label: '发现危险',
+          text: '发现危险',
           description: '看到了潜在的危险，需要小心应对',
           nextSegmentId: 'danger-ending',
           position: { x: 'right', y: 'center', offsetX: -5 },
@@ -335,6 +355,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'follow-advice',
           label: '遵循建议',
+          text: '遵循建议',
           description: '按照村长的智慧行事',
           nextSegmentId: 'wise-ending',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -343,6 +364,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'own-path',
           label: '走自己的路',
+          text: '走自己的路',
           description: '感谢建议但选择自己的道路',
           nextSegmentId: 'independent-ending',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -371,6 +393,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'buy-map',
           label: '购买地图',
+          text: '购买地图',
           description: '买一张详细的地图来指引方向',
           nextSegmentId: 'map-ending',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -379,6 +402,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'trade-goods',
           label: '交易物品',
+          text: '交易物品',
           description: '用身上的物品换取有用的工具',
           nextSegmentId: 'trade-ending',
           position: { x: 'left', y: 'center', offsetX: 5 },
@@ -407,6 +431,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'overcome-fear',
           label: '克服恐惧',
+          text: '克服恐惧',
           description: '战胜内心的恐惧，继续攀登',
           nextSegmentId: 'courage-ending',
           position: { x: 'center', y: 'center' },
@@ -415,6 +440,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'find-shelter',
           label: '寻找庇护',
+          text: '寻找庇护',
           description: '天气恶劣，需要找个地方避风',
           nextSegmentId: 'shelter-ending',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -443,6 +469,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'explore-deeper',
           label: '深入探索',
+          text: '深入探索',
           description: '继续深入洞穴寻找宝藏',
           nextSegmentId: 'cave-treasure-ending',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -451,6 +478,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'rest-here',
           label: '在此休息',
+          text: '在此休息',
           description: '在洞穴中休息恢复体力',
           nextSegmentId: 'rest-ending',
           position: { x: 'right', y: 'center', offsetX: -5 },
@@ -479,6 +507,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'follow-downstream',
           label: '顺流而下',
+          text: '顺流而下',
           description: '跟随溪流找到出山的路',
           nextSegmentId: 'downstream-ending',
           position: { x: 'left', y: 'center', offsetX: 5 },
@@ -487,6 +516,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
         {
           id: 'cross-stream',
           label: '渡过溪流',
+          text: '渡过溪流',
           description: '渡过溪流探索对岸',
           nextSegmentId: 'crossing-ending',
           position: { x: 'right', y: 'center', offsetX: -5 },
@@ -658,6 +688,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'learn-basics',
           label: '学习基础功能',
+          text: '学习基础功能',
           description: '了解互动视频的基本操作',
           nextSegmentId: 'basics-lesson',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -666,6 +697,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'advanced-features',
           label: '高级功能演示',
+          text: '高级功能演示',
           description: '探索更复杂的互动功能',
           nextSegmentId: 'advanced-lesson',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -674,6 +706,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'quick-demo',
           label: '快速演示',
+          text: '快速演示',
           description: '快速了解所有功能',
           nextSegmentId: 'demo-lesson',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -696,6 +729,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'practice-basic',
           label: '练习基础操作',
+          text: '练习基础操作',
           description: '通过练习掌握基础功能',
           nextSegmentId: 'basic-practice-ending',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -704,6 +738,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'learn-advanced',
           label: '继续学习高级功能',
+          text: '继续学习高级功能',
           description: '进入高级功能学习',
           nextSegmentId: 'advanced-lesson',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -732,6 +767,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'practice-advanced',
           label: '练习高级功能',
+          text: '练习高级功能',
           description: '通过实践来巩固高级功能学习',
           nextSegmentId: 'advanced-practice-ending',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
@@ -740,6 +776,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'finish-tutorial',
           label: '完成教程',
+          text: '完成教程',
           description: '结束学习，开始使用',
           nextSegmentId: 'tutorial-complete-ending',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
@@ -748,6 +785,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'review-basics',
           label: '回顾基础',
+          text: '回顾基础',
           description: '重新学习基础功能',
           nextSegmentId: 'basics-lesson',
           position: { x: 'center', y: 'bottom', offsetY: 20 },
@@ -770,6 +808,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'detailed-learning',
           label: '详细学习',
+          text: '详细学习',
           description: '转到详细的学习模式',
           nextSegmentId: 'basics-lesson',
           position: { x: 'left', y: 'bottom', offsetX: 15, offsetY: 25 },
@@ -778,6 +817,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
         {
           id: 'finish-demo',
           label: '完成演示',
+          text: '完成演示',
           description: '结束快速演示',
           nextSegmentId: 'demo-complete-ending',
           position: { x: 'right', y: 'bottom', offsetX: -15, offsetY: 25 },

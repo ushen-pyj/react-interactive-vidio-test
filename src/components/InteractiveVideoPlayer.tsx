@@ -113,11 +113,11 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           setPlayerState(state);
           events?.onStateChange?.(state);
         },
-        onSegmentChange: (segment: VideoSegment) => {
+        onSegmentComplete: (segment: VideoSegment) => {
           setCurrentSegment(segment);
           events?.onSegmentStart?.(segment);
         },
-        onBranchTrigger: (segment: VideoSegment, branches: BranchOption[]) => {
+        onBranchSelection: (segment: VideoSegment, branches: BranchOption[]) => {
           setAvailableBranches(branches);
           events?.onBranchTrigger?.(segment, branches);
         },
@@ -222,23 +222,23 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       const element = backgroundAnimationRef.current;
       const computedStyle = window.getComputedStyle(element);
       
-      console.log('🔍 背景动画元素调试信息:');
-      console.log('  - 元素存在:', !!element);
-      console.log('  - animationName:', computedStyle.animationName);
-      console.log('  - animationDuration:', computedStyle.animationDuration);
-      console.log('  - animationIterationCount:', computedStyle.animationIterationCount);
-      console.log('  - animationPlayState:', computedStyle.animationPlayState);
-      console.log('  - transform:', computedStyle.transform);
-      console.log('  - zIndex:', computedStyle.zIndex);
-      console.log('  - position:', computedStyle.position);
+      // console.log('🔍 背景动画元素调试信息:');
+      // console.log('  - 元素存在:', !!element);
+      // console.log('  - animationName:', computedStyle.animationName);
+      // console.log('  - animationDuration:', computedStyle.animationDuration);
+      // console.log('  - animationIterationCount:', computedStyle.animationIterationCount);
+      // console.log('  - animationPlayState:', computedStyle.animationPlayState);
+      // console.log('  - transform:', computedStyle.transform);
+      // console.log('  - zIndex:', computedStyle.zIndex);
+      // console.log('  - position:', computedStyle.position);
       
       // 检查CSS变量
       const amplitude = computedStyle.getPropertyValue('--amplitude');
       const scaleMin = computedStyle.getPropertyValue('--scale-min');
       const scaleMax = computedStyle.getPropertyValue('--scale-max');
-      console.log('  - CSS变量 --amplitude:', amplitude);
-      console.log('  - CSS变量 --scale-min:', scaleMin);
-      console.log('  - CSS变量 --scale-max:', scaleMax);
+      // console.log('  - CSS变量 --amplitude:', amplitude);
+      // console.log('  - CSS变量 --scale-min:', scaleMin);
+      // console.log('  - CSS变量 --scale-max:', scaleMax);
     }
   }, [showBackgroundAnimation, backgroundFrame, currentSegment]);
 
@@ -389,7 +389,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   
   // 辅助函数：获取背景动画样式
   const getBackgroundAnimationStyle = (animation: any) => {
-    console.log('🎨 生成背景动画样式，配置:', animation);
+    // console.log('🎨 生成背景动画样式，配置:', animation);
     
     if (!animation || !animation.enabled) {
       console.log('❌ 动画未启用');
@@ -399,7 +399,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     const duration = animation.duration || 3;
     const amplitude = animation.amplitude || 20;
     
-    console.log('⏱️ 动画参数 - 持续时间:', duration, '幅度:', amplitude);
+    // console.log('⏱️ 动画参数 - 持续时间:', duration, '幅度:', amplitude);
     
     const baseStyle = {
       animationDuration: `${duration}s`,
@@ -534,12 +534,12 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         {/* 背景动画帧 */}
         {(() => {
           const shouldShow = showBackgroundAnimation && backgroundFrame && currentSegment?.backgroundAnimation !== undefined;
-          console.log('🎬 背景动画渲染检查:');
-          console.log('  - showBackgroundAnimation:', showBackgroundAnimation);
-          console.log('  - backgroundFrame存在:', !!backgroundFrame);
-          console.log('  - currentSegment存在:', !!currentSegment);
-          console.log('  - backgroundAnimation配置:', currentSegment?.backgroundAnimation);
-          console.log('  - 最终显示:', shouldShow);
+          // console.log('🎬 背景动画渲染检查:');
+          // console.log('  - showBackgroundAnimation:', showBackgroundAnimation);
+          // console.log('  - backgroundFrame存在:', !!backgroundFrame);
+          // console.log('  - currentSegment存在:', !!currentSegment);
+          // console.log('  - backgroundAnimation配置:', currentSegment?.backgroundAnimation);
+          // console.log('  - 最终显示:', shouldShow);
           
           if (shouldShow) {
             const animationStyle = getBackgroundAnimationStyle(currentSegment.backgroundAnimation);
@@ -559,13 +559,13 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
                 ...getBackgroundAnimationStyle(currentSegment.backgroundAnimation)
               }}
               onAnimationStart={(e) => {
-                console.log('🎬 背景动画开始:', e.animationName);
+                // console.log('🎬 背景动画开始:', e.animationName);
               }}
               onAnimationIteration={(e) => {
-                console.log('🔄 背景动画循环:', e.animationName, '第', e.elapsedTime, '秒');
+                // console.log('🔄 背景动画循环:', e.animationName, '第', e.elapsedTime, '秒');
               }}
               onAnimationEnd={(e) => {
-                console.log('🏁 背景动画结束:', e.animationName);
+                // console.log('🏁 背景动画结束:', e.animationName);
               }}
             />
           ) : null;
