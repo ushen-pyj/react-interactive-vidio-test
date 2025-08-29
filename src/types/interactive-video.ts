@@ -79,9 +79,10 @@ export interface BranchOption {
 export interface VideoSegment {
   id: string;
   videoUrl: string;
+  // 播放时长（秒）
   duration: number;
-  startTime?: number;
-  endTime?: number;
+  // 快进到指定时间点（秒）
+  seekTime?: number;
   // 分支触发点（相对于片段开始时间的秒数）
   branchTriggerTime?: number;
   // 分支选项
@@ -144,6 +145,7 @@ export interface VideoContextInstance {
   play: () => void;
   pause: () => void;
   currentTime: number;
+  duration: number;
   destination: any;
 }
 

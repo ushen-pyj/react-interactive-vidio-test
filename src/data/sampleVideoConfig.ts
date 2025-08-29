@@ -1,4 +1,5 @@
 import { InteractiveVideoConfig } from '../types/interactive-video';
+import { StyleUtils, createTitleStyle, createButtonStyle } from '../utils/stylePresets';
 
 const tempVidio = "/assest/BigBuckBunny.mp4"
 
@@ -18,23 +19,13 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     {
       id: 'intro',
       videoUrl: '/assest/BigBuckBunny.mp4',
-      duration: 10,
-      startTime: 0,
-      endTime: 10,
+      duration: 30,
+      seekTime: 0,
       branchTriggerTime: 8,
       branchTitle: {
         text: '选择你的冒险路径',
         position: { x: 'center', y: 'top', offsetY: 10 },
-        style: {
-          fontSize: '24px',
-          fontWeight: '700',
-          color: '#ffffff',
-          backgroundColor: 'transparent',
-          padding: '12px 24px',
-          borderRadius: '12px',
-          border: 'none',
-          backdropBlur: false
-        }
+        style: createTitleStyle('default')
       },
       branches: [
         {
@@ -43,14 +34,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
           description: '选择这条路径将带你深入未知的森林深处',
           nextSegmentId: 'forest-path',
           position: { x: 'left', y: 'bottom', offsetX: 10, offsetY: 20 },
-          style: { 
-            shape: 'circle', 
-            size: 'large', 
-            textPosition: 'right', 
-            textColor: '#ffffff',
-            transparent: true,
-            animation: { type: 'pulse', duration: 2, loop: true }
-          }
+          style: createButtonStyle('circle-large')
         },
         {
           id: 'path-village',
@@ -58,37 +42,20 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
           description: '选择这条安全的路径前往村庄寻求帮助',
           nextSegmentId: 'village-path',
           position: { x: 'right', y: 'bottom', offsetX: -10, offsetY: 20 },
-          style: { 
-            shape: 'circle', 
-            size: 'large', 
-            textPosition: 'left', 
-            textColor: '#ffffff',
-            transparent: true,
-            animation: { type: 'glow', duration: 1.5, loop: true }
-          }
+          style: createButtonStyle('transparent', { textPosition: 'left' })
         }
       ]
     },
     {
       id: 'forest-path',
-      videoUrl: '/assest/ForBiggerBlazes.mp4',
-      duration: 15,
-      startTime: 0,
-      endTime: 15,
+      videoUrl: '/assest/BigBuckBunny.mp4',
+      duration: 20,
+      seekTime: 20,
       branchTriggerTime: 12,
       branchTitle: {
         text: '森林深处的神秘声音',
         position: { x: 'left', y: 'top', offsetX: 5, offsetY: 10 },
-        style: {
-          fontSize: '20px',
-          fontWeight: '600',
-          color: '#22c55e',
-          backgroundColor: '#000000dd',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          border: '2px solid #22c55e',
-          backdropBlur: true
-        }
+        style: createTitleStyle('forest')
       },
       branches: [
         {
@@ -97,14 +64,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
           description: '你听到了森林深处传来的神秘声音',
           nextSegmentId: 'mystery-encounter',
           position: { x: 'center', y: 'top', offsetY: 15 },
-          style: { 
-            shape: 'rectangle', 
-            size: 'medium', 
-            textPosition: 'inside', 
-            textColor: '#ffffff',
-            transparent: true,
-            animation: { type: 'bounce', duration: 1, loop: true }
-          }
+          style: createButtonStyle('rectangle')
         },
         {
           id: 'ignore-sound',
@@ -112,14 +72,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
           description: '保持谨慎，继续沿着小径前进',
           nextSegmentId: 'safe-path',
           position: { x: 'left', y: 'center', offsetX: 5 },
-          style: { 
-            shape: 'circle', 
-            size: 'medium', 
-            textPosition: 'bottom', 
-            textColor: '#ffffff',
-            transparent: true,
-            animation: { type: 'ripple', duration: 2.5, loop: true }
-          }
+          style: createButtonStyle('circle-medium')
         },
         {
           id: 'return-back',
@@ -127,14 +80,7 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
           description: '感到害怕，决定返回安全的地方',
           nextSegmentId: 'village-path',
           position: { x: 'right', y: 'center', offsetX: -5 },
-          style: { 
-            shape: 'circle', 
-            size: 'small', 
-            textPosition: 'top', 
-            textColor: '#ffffff',
-            transparent: true,
-            animation: { type: 'pulse', duration: 1.2, loop: true }
-          }
+          style: createButtonStyle('circle-small')
         }
       ]
     },
@@ -142,22 +88,12 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'village-path',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 12,
-      startTime: 0,
-      endTime: 12,
+      seekTime: 0,
       branchTriggerTime: 10,
       branchTitle: {
         text: '村庄中的选择',
         position: { x: 'right', y: 'center', offsetX: -5 },
-        style: {
-          fontSize: '18px',
-          fontWeight: '500',
-          color: '#3b82f6',
-          backgroundColor: '#000000bb',
-          padding: '8px 16px',
-          borderRadius: '6px',
-          border: '1px solid #3b82f6',
-          backdropBlur: true
-        }
+        style: createTitleStyle('village')
       },
       branches: [
         {
@@ -176,10 +112,9 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'mystery-encounter',
-      videoUrl: '/assest/ForBiggerBlazes.mp4',
+      videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 20,
-      startTime: 0,
-      endTime: 20,
+      seekTime: 20,
       branchTriggerTime: 17,
       branches: [
         {
@@ -200,16 +135,14 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'safe-path',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
-      startTime: 0,
-      endTime: 8,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'elder-wisdom',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 15,
-      startTime: 0,
-      endTime: 15,
+      seekTime: 0,
       branchTriggerTime: 12,
       branches: [
         {
@@ -230,40 +163,35 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'village-secrets',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 10,
-      startTime: 0,
-      endTime: 10,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'heroic-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 12,
-      startTime: 0,
-      endTime: 12,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'collaborative-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 10,
-      startTime: 0,
-      endTime: 10,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'wise-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
-      startTime: 0,
-      endTime: 8,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'independent-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 6,
-      startTime: 0,
-      endTime: 6,
+      seekTime: 0,
       isEnd: true
     }
   ]
@@ -286,8 +214,7 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'tutorial-start',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 5,
-      startTime: 0,
-      endTime: 5,
+      seekTime: 0,
       branchTriggerTime: 4,
       branches: [
         {
@@ -308,16 +235,14 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'basics-lesson',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
-      startTime: 0,
-      endTime: 8,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'advanced-lesson',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 10,
-      startTime: 0,
-      endTime: 10,
+      seekTime: 0,
       branchTriggerTime: 8,
       branches: [
         {
@@ -338,16 +263,14 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'practice-session',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 6,
-      startTime: 0,
-      endTime: 6,
+      seekTime: 0,
       isEnd: true
     },
     {
       id: 'tutorial-end',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 4,
-      startTime: 0,
-      endTime: 4,
+      seekTime: 0,
       isEnd: true
     }
   ]

@@ -3,13 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-geist-sans: 'Geist Sans', system-ui, sans-serif;
+  --font-geist-mono: 'Geist Mono', 'Courier New', monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +15,146 @@
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 确保canvas元素正确显示 */
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 全局滚动条样式 */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5563;
+}
+
+/* 自定义动画定义 */
+@keyframes custom-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(255, 255, 255, 0.4), 0 0 24px rgba(255, 255, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.9), 0 0 32px rgba(255, 255, 255, 0.7), 0 0 48px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes custom-ripple {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes custom-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.85;
+  }
+}
+
+@keyframes custom-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* 动画类 */
+.animate-custom-glow {
+  animation: custom-glow 1.5s ease-in-out infinite;
+}
+
+.animate-custom-ripple {
+  animation: custom-ripple 2.5s ease-out infinite;
+}
+
+.animate-custom-pulse {
+  animation: custom-pulse 2s ease-in-out infinite;
+}
+
+.animate-custom-bounce {
+  animation: custom-bounce 1s ease-in-out infinite;
+}
+
+/* 圆形按钮特殊样式 */
+.interactive-video-circle-button {
+  border-radius: 50% !important;
+  overflow: hidden;
+  position: relative;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.interactive-video-circle-button:hover {
+  transform: scale(1.1) !important;
+  border-radius: 50% !important;
+}
+
+.interactive-video-circle-button:active {
+  transform: scale(0.95) !important;
+  border-radius: 50% !important;
+}
+
+.interactive-video-circle-button:focus {
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 矩形按钮样式 */
+.interactive-video-rect-button {
+  border-radius: 8px !important;
+  overflow: hidden;
+  position: relative;
+  outline: none !important;
+}
+
+.interactive-video-rect-button:hover {
+  transform: scale(1.05) !important;
+}
+
+.interactive-video-rect-button:active {
+  transform: scale(0.95) !important;
+}
+
+.interactive-video-rect-button:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5) !important;
 }
