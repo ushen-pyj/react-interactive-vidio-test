@@ -79,6 +79,7 @@ export interface TitleConfig {
 export interface BranchOption {
   id: string;
   label: string;
+  text: string;
   description?: string;
   nextSegmentId: string;
   // 按钮位置配置
@@ -167,4 +168,5 @@ export interface VideoNode {
   start: (time: number) => void;
   stop: (time: number) => void;
   connect: (destination: any) => void;
+  disconnect: () => void;
 }
