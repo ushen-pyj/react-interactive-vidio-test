@@ -94,8 +94,6 @@ export interface VideoSegment {
   videoUrl: string;
   // 播放时长（秒）
   duration: number;
-  // 快进到指定时间点（秒）
-  seekTime?: number;
   // 分支触发点（相对于片段开始时间的秒数）
   branchTriggerTime?: number;
   // 分支选项
@@ -155,6 +153,16 @@ declare global {
   }
 }
 
+const EVENTS = Object.freeze({
+    UPDATE: "update",
+    STALLED: "stalled",
+    ENDED: "ended",
+    CONTENT: "content",
+    NOCONTENT: "nocontent"
+});
+
+export { EVENTS };
+
 export interface VideoContextInstance {
   video: (src: string) => VideoNode;
   play: () => void;
@@ -162,9 +170,14 @@ export interface VideoContextInstance {
   currentTime: number;
   duration: number;
   destination: any;
+  registerCallback: (event: string, callback: Function) => void;
+  unregisterCallback: (callback: Function) => void;
 }
 
+
 export interface VideoNode {
+  startTime: number;
+  stopTime: number;
   start: (time: number) => void;
   stop: (time: number) => void;
   connect: (destination: any) => void;

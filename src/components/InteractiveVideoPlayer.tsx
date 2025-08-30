@@ -7,8 +7,7 @@ import {
   BranchOption,
   PlayerState,
   PlayerEvents,
-  VideoContextInstance,
-  VideoNode
+  VideoContextInstance
 } from '../types/interactive-video';
 import VideoSequenceManager from '../utils/VideoSequenceManager';
 
@@ -37,13 +36,11 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   const backgroundAnimationRef = useRef<HTMLDivElement>(null);
   const videoContextRef = useRef<VideoContextInstance | null>(null);
   const sequenceManagerRef = useRef<VideoSequenceManager | null>(null);
-  const currentVideoNodeRef = useRef<VideoNode | null>(null);
   const timeUpdateIntervalRef = useRef<NodeJS.Timeout | null>(null);
   
   const [playerState, setPlayerState] = useState<PlayerState>(PlayerState.IDLE);
   const [currentSegment, setCurrentSegment] = useState<VideoSegment | null>(null);
   const [availableBranches, setAvailableBranches] = useState<BranchOption[]>([]);
-  const [currentTime, setCurrentTime] = useState(0);
   const [isVideoContextLoaded, setIsVideoContextLoaded] = useState(false);
   const [backgroundFrame, setBackgroundFrame] = useState<string | null>(null);
   const [showBackgroundAnimation, setShowBackgroundAnimation] = useState(false);
@@ -123,8 +120,8 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         },
         onFrameCapture: (frameData: string, segment: VideoSegment) => {
           console.log('🖼️ 收到帧捕获回调，片段:', segment.id);
-          console.log('🎨 背景动画配置:', segment.backgroundAnimation);
-          console.log('📊 帧数据长度:', frameData.length);
+          // console.log('🎨 背景动画配置:', segment.backgroundAnimation);
+          // console.log('📊 帧数据长度:', frameData.length);
           
           setBackgroundFrame(frameData);
           if (segment.backgroundAnimation?.enabled) {
@@ -150,21 +147,6 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       events?.onError?.(error as Error);
     }
   }, [isVideoContextLoaded, config]); // 移除events依赖项
-
-  // 播放指定片段（通过VideoSequenceManager）
-  const playSegment = useCallback(async (segmentId: string) => {
-    if (!sequenceManagerRef.current) {
-      console.error('VideoSequenceManager not initialized');
-      return;
-    }
-
-    try {
-      await sequenceManagerRef.current.playSegmentById(segmentId);
-    } catch (error) {
-      console.error('Error playing segment:', error);
-      events?.onError?.(error as Error);
-    }
-  }, []); // 移除events依赖项
 
   // 选择分支（通过VideoSequenceManager）
   const selectBranch = useCallback(async (option: BranchOption) => {
@@ -417,7 +399,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           animationName: 'backgroundHorizontal',
           '--amplitude': `${amplitude}px`
         };
-        console.log('↔️ 水平动画样式:', style);
+        // console.log('↔️ 水平动画样式:', style);
         break;
       case 'vertical':
         style = {
@@ -425,7 +407,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           animationName: 'backgroundVertical',
           '--amplitude': `${amplitude}px`
         };
-        console.log('↕️ 垂直动画样式:', style);
+        // console.log('↕️ 垂直动画样式:', style);
         break;
       case 'scale':
         style = {
@@ -434,7 +416,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           '--scale-min': `${1 - amplitude * 0.01}`,
           '--scale-max': `${1 + amplitude * 0.01}`
         };
-        console.log('🔍 缩放动画样式:', style);
+        // console.log('🔍 缩放动画样式:', style);
         break;
       default:
         console.log('❌ 未知动画类型:', animation.type);
@@ -543,7 +525,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           
           if (shouldShow) {
             const animationStyle = getBackgroundAnimationStyle(currentSegment.backgroundAnimation);
-            console.log('🎨 动画样式:', animationStyle);
+            // console.log('🎨 动画样式:', animationStyle);
           }
           
           return shouldShow ? (

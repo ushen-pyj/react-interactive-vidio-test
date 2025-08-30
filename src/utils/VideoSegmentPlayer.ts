@@ -3,7 +3,8 @@ import {
   BranchOption,
   PlayerState,
   VideoContextInstance,
-  VideoNode
+  VideoNode,
+  EVENTS
 } from '../types/interactive-video';
 
 // 视频片段播放器事件接口
@@ -28,15 +29,18 @@ export class VideoSegmentPlayer {
   private currentPlayPromise: Promise<void> | null = null;
   private branchTimeout: NodeJS.Timeout | null = null;
   private endTimeout: NodeJS.Timeout | null = null;
-  
+  private startTime: number = 0;
+
   constructor(
     segment: VideoSegment,
     videoContext: VideoContextInstance,
+    startTime: number,
     events: VideoSegmentPlayerEvents = {}
   ) {
     this.segment = segment;
     this.videoContext = videoContext;
     this.events = events;
+    this.startTime = startTime;
   }
 
   // 获取片段信息
@@ -76,19 +80,35 @@ export class VideoSegmentPlayer {
     try {
       this.events.onStateChange?.(PlayerState.LOADING, this.segment);
       
+      // 确保videoContext处于正确状态
+      try {
+        await this.videoContext.pause();
+      } catch (error) {
+        // 忽略pause错误，可能videoContext还没有开始播放
+      }
+      
       // 创建新的视频节点
       console.log(`🔄 创建视频节点，片段: ${this.segment.id}, URL: ${this.segment.videoUrl}`);
       this.videoNode = this.videoContext.video(this.segment.videoUrl);
       
+      // 验证视频节点创建成功
+      if (!this.videoNode) {
+        throw new Error(`Failed to create video node for segment ${this.segment.id}`);
+      }
+      
+
+      const endTime = this.startTime + this.segment.duration;
+      
+      console.log(this.videoContext.currentTime, `⏰ \n 设置播放时间: ${this.startTime}s - ${endTime}s (时长: ${this.segment.duration}s)`);
+      
+      // 设置视频节点在VideoContext时间轴上的播放时间
+      this.videoNode.start(this.startTime);
+      this.videoNode.stop(endTime);
       // 连接到输出
       this.videoNode.connect(this.videoContext.destination);
-
-      // 设置播放时间
-      const seekTime = this.segment.seekTime || 0;
-      const endTime = seekTime + this.segment.duration;
       
-      this.videoNode.start(seekTime);
-      this.videoNode.stop(endTime);
+      // 重要：设置VideoContext的当前时间到片段开始时间
+      this.videoContext.currentTime = this.videoNode.startTime;
 
       // 开始播放
       this.currentPlayPromise = this.attemptPlay();
@@ -97,15 +117,23 @@ export class VideoSegmentPlayer {
       this.isPlaying = true;
       this.isLoading = false;
       this.events.onStateChange?.(PlayerState.PLAYING, this.segment);
-
-      // 设置分支触发定时器（片段结束事件将在分支选择触发时处理）
-      this.setupBranchTrigger();
-      
-      // 如果没有分支选择，仍需要设置片段结束定时器
-      if (!this.segment.branches || this.segment.branches.length === 0) {
-        this.setupEndTimer();
-      }
-
+      let branchTime = this.videoNode.startTime + (this.segment.branchTriggerTime ?? this.segment.duration);
+      // // 设置分支触发定时器（片段结束事件将在分支选择触发时处理）
+      // this.setupBranchTrigger();
+      let handleUpdate: () => void;
+      handleUpdate = () => {
+        // console.log("handleUpdate", this.videoContext.currentTime, branchTime);
+        if (this.videoContext.currentTime < branchTime) {
+          return
+        }
+        this.videoContext.unregisterCallback(handleUpdate);
+        if (this.segment.branchTriggerTime && this.segment.branches) {
+          this.triggerBranchSelection();
+        }else{
+          this.handleSegmentEnd();
+        }
+      };
+      this.videoContext.registerCallback(EVENTS.UPDATE, handleUpdate);
       console.log(`✅ 片段 ${this.segment.id} 开始播放`);
 
     } catch (error) {
@@ -154,9 +182,10 @@ export class VideoSegmentPlayer {
     // 断开视频节点连接
     if (this.videoNode) {
       try {
+        // 先停止节点，然后断开连接
         this.videoNode.disconnect();
       } catch (error) {
-        console.warn(`Error disconnecting video node for segment ${this.segment.id}:`, error);
+        console.warn(`Error stopping/disconnecting video node for segment ${this.segment.id}:`, error);
       }
       this.videoNode = null;
     }
@@ -173,6 +202,7 @@ export class VideoSegmentPlayer {
     
     while (playAttempts < maxPlayAttempts) {
       try {
+        console.log("开始播放", this.videoContext, this.videoContext.currentTime, this.videoContext.duration, this.videoNode?.startTime)
         await this.videoContext.play();
         return; // 播放成功，退出
       } catch (playError: any) {
@@ -197,29 +227,9 @@ export class VideoSegmentPlayer {
     }
   }
 
-  // 设置分支触发定时器
-  private setupBranchTrigger(): void {
-    if (this.segment.branchTriggerTime && this.segment.branches) {
-      console.log(`⏰ 设置分支触发定时器，片段: ${this.segment.id}, 触发时间: ${this.segment.branchTriggerTime}秒`);
-      
-      this.branchTimeout = setTimeout(async () => {
-        console.log(`⏰ 分支触发定时器执行，片段: ${this.segment.id}`);
-        await this.triggerBranchSelection();
-      }, this.segment.branchTriggerTime * 1000);
-    }
-  }
-
-  // 设置片段结束定时器
-  private setupEndTimer(): void {
-    this.endTimeout = setTimeout(() => {
-      console.log(`⏰ 片段结束定时器执行，片段: ${this.segment.id}`);
-      this.handleSegmentEnd();
-    }, this.segment.duration * 1000);
-  }
-
   // 触发分支选择
   private async triggerBranchSelection(): Promise<void> {
-    console.log(`🎯 触发分支选择，片段: ${this.segment.id}`);
+    console.log(`🎯 触发分支选择，片段: ${this.segment.id} ${this.videoContext.currentTime}`);
     
     if (!this.segment.branches || this.segment.branches.length === 0) {
       console.log('❌ 没有分支选项，跳过');
