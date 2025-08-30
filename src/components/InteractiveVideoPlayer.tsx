@@ -25,12 +25,14 @@ interface InteractiveVideoPlayerProps {
   config: InteractiveVideoConfig;
   events?: Partial<PlayerEvents>;
   className?: string;
+  isEmbedded?: boolean;
 }
 
 export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   config,
   events,
-  className = ''
+  className = '',
+  isEmbedded = false
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const backgroundAnimationRef = useRef<HTMLDivElement>(null);
@@ -676,47 +678,49 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         )}
       </div>
 
-      {/* 播放控制栏 */}
-      <div className="controls mt-4 flex items-center justify-center gap-4">
-        {playerState === PlayerState.PLAYING ? (
-          <button
-            onClick={pause}
-            className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
-          >
-            暂停
-          </button>
-        ) : (
-          <button
-            onClick={play}
-            disabled={playerState === PlayerState.LOADING || playerState === PlayerState.WAITING_FOR_CHOICE}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded transition-colors"
-          >
-            播放
-          </button>
-        )}
-        
-        {/* 倍速选择器 */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">倍速:</span>
-          <select
-            value={playbackRate}
-            onChange={(e) => changePlaybackRate(parseFloat(e.target.value))}
-            className="bg-white border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value={0.5}>0.5x</option>
-            <option value={0.75}>0.75x</option>
-            <option value={1.0}>1.0x</option>
-            <option value={1.25}>1.25x</option>
-            <option value={1.5}>1.5x</option>
-            <option value={2.0}>2.0x</option>
-            <option value={3.0}>3.0x</option>
-          </select>
+      {/* 播放控制栏 - 仅在非嵌入模式下显示 */}
+      {!isEmbedded && (
+        <div className="controls mt-4 flex items-center justify-center gap-4">
+          {playerState === PlayerState.PLAYING ? (
+            <button
+              onClick={pause}
+              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
+            >
+              暂停
+            </button>
+          ) : (
+            <button
+              onClick={play}
+              disabled={playerState === PlayerState.LOADING || playerState === PlayerState.WAITING_FOR_CHOICE}
+              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded transition-colors"
+            >
+              播放
+            </button>
+          )}
+          
+          {/* 倍速选择器 */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">倍速:</span>
+            <select
+              value={playbackRate}
+              onChange={(e) => changePlaybackRate(parseFloat(e.target.value))}
+              className="bg-white border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value={0.5}>0.5x</option>
+              <option value={0.75}>0.75x</option>
+              <option value={1.0}>1.0x</option>
+              <option value={1.25}>1.25x</option>
+              <option value={1.5}>1.5x</option>
+              <option value={2.0}>2.0x</option>
+              <option value={3.0}>3.0x</option>
+            </select>
+          </div>
+          
+          <div className="text-sm text-gray-600">
+            当前片段: {currentSegment?.id || '无'}
+          </div>
         </div>
-        
-        <div className="text-sm text-gray-600">
-          当前片段: {currentSegment?.id || '无'}
-        </div>
-      </div>
+      )}
     </div>
   );
 };
