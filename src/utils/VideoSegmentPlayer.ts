@@ -87,6 +87,11 @@ export class VideoSegmentPlayer {
         // 忽略pause错误，可能videoContext还没有开始播放
       }
       
+      // 验证视频URL
+      if (!this.segment.videoUrl || this.segment.videoUrl.trim() === '') {
+        throw new Error(`Invalid video URL for segment ${this.segment.id}: ${this.segment.videoUrl}`);
+      }
+      
       // 创建新的视频节点
       console.log(`🔄 创建视频节点，片段: ${this.segment.id}, URL: ${this.segment.videoUrl}`);
       this.videoNode = this.videoContext.video(this.segment.videoUrl);
@@ -117,7 +122,7 @@ export class VideoSegmentPlayer {
       this.isPlaying = true;
       this.isLoading = false;
       this.events.onStateChange?.(PlayerState.PLAYING, this.segment);
-      let branchTime = this.videoNode.startTime + (this.segment.branchTriggerTime ?? this.segment.duration);
+      const branchTime = this.videoNode.startTime + (this.segment.branchTriggerTime ?? this.segment.duration);
       // // 设置分支触发定时器（片段结束事件将在分支选择触发时处理）
       // this.setupBranchTrigger();
       let isTriggerBranch: boolean = false
