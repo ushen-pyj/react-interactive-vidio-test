@@ -122,7 +122,7 @@ export class VideoSequenceManager {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     // 创建播放器实例，使用累积时间作为起始时间
-    let player = this.createPlayerInstance(segment, this.totalPlayedTime);
+    const player = this.createPlayerInstance(segment, this.totalPlayedTime);
 
     // 设置为当前播放器并开始播放
     this.currentPlayer = player;

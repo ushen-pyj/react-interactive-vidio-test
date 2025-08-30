@@ -1,11 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { availableConfigs } from '../../data/sampleVideoConfig';
 
 export default function DemoPage() {
   const [selectedStory, setSelectedStory] = useState('adventure');
   const [iframeKey, setIframeKey] = useState(0);
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    // 在客户端设置origin
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin);
+    }
+  }, []);
 
   const handleStoryChange = (storyId: string) => {
     setSelectedStory(storyId);
@@ -13,7 +21,7 @@ export default function DemoPage() {
     setIframeKey(prev => prev + 1);
   };
 
-  const embedUrl = `${window.location.origin}/embed?story=${selectedStory}`;
+  const embedUrl = `${origin}/embed?story=${selectedStory}`;
   const iframeCode = `<iframe 
   src="${embedUrl}" 
   width="1280" 
@@ -22,6 +30,15 @@ export default function DemoPage() {
   allowfullscreen
   style="border-radius: 8px;">
 </iframe>`;
+
+  // 如果origin还没有设置，显示加载状态
+  if (!origin) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-lg text-gray-600">加载中...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">

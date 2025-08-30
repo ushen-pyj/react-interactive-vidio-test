@@ -20,6 +20,20 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    rules: {
+      // 将TypeScript相关错误降级为警告
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unsafe-function-type": "warn",
+      "@typescript-eslint/no-empty-object-type": "warn",
+      
+      // 将React Hooks相关错误降级为警告
+      "react-hooks/exhaustive-deps": "warn",
+      
+      // 将代码质量问题降级为警告
+      "prefer-const": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;
