@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import InteractiveVideoPlayer from '../components/InteractiveVideoPlayer';
 import BranchTree from '../components/BranchTree';
+import VideoConfigEditor from '../components/VideoConfigEditor';
 import { availableConfigs } from '../data/sampleVideoConfig';
 import { InteractiveVideoConfig, PlayerState } from '../types/interactive-video';
 
@@ -10,11 +11,12 @@ export default function Home() {
   const [selectedConfig, setSelectedConfig] = useState<InteractiveVideoConfig | null>(null);
   const [playerState, setPlayerState] = useState<PlayerState>(PlayerState.IDLE);
   const [playbackHistory, setPlaybackHistory] = useState<string[]>([]);
+  const [showEditor, setShowEditor] = useState(false);
 
   const handleConfigSelect = (configKey: string) => {
     const config = availableConfigs[configKey as keyof typeof availableConfigs];
     if (config) {
-      setSelectedConfig(config);
+      setSelectedConfig(config as InteractiveVideoConfig);
       setPlaybackHistory([]);
     }
   };
@@ -22,6 +24,12 @@ export default function Home() {
   const handleBackToMenu = () => {
     setSelectedConfig(null);
     setPlayerState(PlayerState.IDLE);
+    setShowEditor(false);
+  };
+
+  const handleOpenEditor = () => {
+    setShowEditor(true);
+    setSelectedConfig(null);
   };
 
   const handleStateChange = (state: PlayerState) => {
@@ -35,6 +43,35 @@ export default function Home() {
   const handleBranchSelect = (option: any) => {
     setPlaybackHistory(prev => [...prev, `选择分支: ${option.label}`]);
   };
+
+  if (showEditor) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <div className="max-w-full mx-auto">
+          {/* 头部导航 */}
+          <div className="bg-white shadow-sm border-b px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={handleBackToMenu}
+                  className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  返回主页
+                </button>
+                <h1 className="text-xl font-semibold text-gray-800">互动视频配置编辑器</h1>
+              </div>
+            </div>
+          </div>
+          
+          {/* 编辑器内容 */}
+          <VideoConfigEditor />
+        </div>
+      </div>
+    );
+  }
 
   if (selectedConfig) {
     return (
@@ -151,6 +188,32 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             选择一个示例开始体验
           </h2>
+          
+          {/* 编辑器入口 */}
+          <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mr-4">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-1">创建自定义配置</h3>
+                  <p className="text-sm text-gray-600">使用可视化编辑器创建和编辑互动视频配置，支持拖拽操作和实时预览</p>
+                </div>
+              </div>
+              <button
+                onClick={handleOpenEditor}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                打开编辑器
+              </button>
+            </div>
+          </div>
           
           <div className="grid md:grid-cols-2 gap-6">
             {/* 冒险故事示例 */}
