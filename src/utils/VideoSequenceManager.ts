@@ -32,6 +32,7 @@ export class VideoSequenceManager {
   // 历史记录和状态
   private playbackHistory: PlaybackHistory[] = [];
   private currentSegmentId: string | null = null;
+  private totalPlayedTime: number = 0; // 累积播放时间
   
   // 事件回调
   private onStateChange?: (state: PlayerState) => void;
@@ -95,6 +96,9 @@ export class VideoSequenceManager {
       throw new Error(`Segment not found: ${segmentId}`);
     }
 
+    // 重置累积播放时间
+    this.totalPlayedTime = 0;
+    
     console.log(`🎬 开始播放序列，起始片段: ${segmentId}`);
     await this.playSegmentById(segmentId);
   }
@@ -110,14 +114,22 @@ export class VideoSequenceManager {
     if (this.currentPlayer) {
       await this.currentPlayer.stop();
       this.currentPlayer.dispose();
+      // 确保当前播放器完全清理后再继续
+      this.currentPlayer = null;
     }
 
-    // 创建或获取播放器实例
-    let player = this.createPlayerInstance(segment);
+    // 添加短暂延迟确保videoContext状态稳定
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    // 创建播放器实例，使用累积时间作为起始时间
+    let player = this.createPlayerInstance(segment, this.totalPlayedTime);
 
     // 设置为当前播放器并开始播放
     this.currentPlayer = player;
     this.currentSegmentId = segmentId;
+    
+    // 更新累积播放时间
+    this.totalPlayedTime += segment.duration;
     
     // 添加到历史记录
     this.addToHistory(segmentId);
@@ -127,8 +139,8 @@ export class VideoSequenceManager {
   }
 
   // 创建播放器实例
-  private createPlayerInstance(segment: VideoSegment): VideoSegmentPlayer {
-    return new VideoSegmentPlayer(segment, this.videoContext, {
+  private createPlayerInstance(segment: VideoSegment, startTime: number): VideoSegmentPlayer {
+    return new VideoSegmentPlayer(segment, this.videoContext, startTime, {
       onStateChange: (state, seg) => {
         console.log(`🔄 播放器状态变化: ${seg.id} -> ${state}`);
         this.onStateChange?.(state);
@@ -154,13 +166,29 @@ export class VideoSequenceManager {
 
   // 选择分支
   async selectBranch(branchOption: BranchOption): Promise<void> {
-    console.log(`🎯 选择分支: ${branchOption.text} -> ${branchOption.nextSegmentId}`);
+    console.log(`🎯 选择分支: ${branchOption.text} -> ${branchOption.nextSegmentId} 当前ctx播放时间 ${this.videoContext.currentTime}`);
     
-    // 更新历史记录中的分支选择
-    this.updateHistoryWithBranch(branchOption);
-    
-    // 播放下一个片段
-    await this.playSegmentById(branchOption.nextSegmentId);
+    try {
+      // 验证目标片段存在
+      const targetSegment = this.getSegmentById(branchOption.nextSegmentId);
+      if (!targetSegment) {
+        throw new Error(`Target segment not found: ${branchOption.nextSegmentId}`);
+      }
+      
+      console.log(`✅ 目标片段验证成功: ${targetSegment.id}, URL: ${targetSegment.videoUrl}`);
+      
+      // 更新历史记录中的分支选择
+      this.updateHistoryWithBranch(branchOption);
+      
+      // 播放下一个片段
+      await this.playSegmentById(branchOption.nextSegmentId);
+      
+      console.log(`🎬 分支切换完成: ${branchOption.nextSegmentId}`);
+    } catch (error) {
+      console.error(`❌ 分支选择失败:`, error);
+      this.handleError(error as Error);
+      throw error;
+    }
   }
 
   // 处理片段结束
@@ -315,6 +343,7 @@ export class VideoSequenceManager {
     // 重置状态
     this.currentPlayer = null;
     this.currentSegmentId = null;
+    this.totalPlayedTime = 0;
   }
 }
 

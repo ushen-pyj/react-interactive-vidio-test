@@ -18,7 +18,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'intro',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 15,
-      seekTime: 0,
       branchTriggerTime: 12,
       backgroundAnimation: {
         type: 'horizontal',
@@ -65,7 +64,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'forest-path',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 18,
-      seekTime: 15,
       branchTriggerTime: 15,
       backgroundAnimation: {
         type: 'vertical',
@@ -119,9 +117,8 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     },
     {
       id: 'village-path',
-      videoUrl: '/assest/BigBuckBunny.mp4',
-      duration: 20,
-      seekTime: 33,
+      videoUrl: '/assest/ElephantsDream.mp4',
+      duration: 33,
       branchTriggerTime: 17,
       backgroundAnimation: {
         type: 'scale',
@@ -167,9 +164,8 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
     {
       id: 'mountain-path',
       videoUrl: '/assest/BigBuckBunny.mp4',
-      duration: 22,
-      seekTime: 53,
-      branchTriggerTime: 19,
+      duration: 15,
+      branchTriggerTime: 12,
       backgroundAnimation: {
         type: 'horizontal',
         duration: 6,
@@ -215,7 +211,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'mystery-encounter',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 25,
-      seekTime: 75,
       branchTriggerTime: 22,
       backgroundAnimation: {
         type: 'scale',
@@ -262,7 +257,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'deep-forest',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 20,
-      seekTime: 100,
       branchTriggerTime: 17,
       backgroundAnimation: {
         type: 'vertical',
@@ -300,7 +294,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'tree-view',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 15,
-      seekTime: 120,
       branchTriggerTime: 12,
       backgroundAnimation: {
         type: 'horizontal',
@@ -338,7 +331,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'elder-wisdom',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 18,
-      seekTime: 135,
       branchTriggerTime: 15,
       backgroundAnimation: {
         type: 'scale',
@@ -376,7 +368,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'market-encounter',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 16,
-      seekTime: 153,
       branchTriggerTime: 13,
       backgroundAnimation: {
         type: 'horizontal',
@@ -414,7 +405,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'peak-challenge',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 24,
-      seekTime: 169,
       branchTriggerTime: 21,
       backgroundAnimation: {
         type: 'vertical',
@@ -452,7 +442,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'cave-discovery',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 19,
-      seekTime: 193,
       branchTriggerTime: 16,
       backgroundAnimation: {
         type: 'scale',
@@ -490,7 +479,6 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'stream-path',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 17,
-      seekTime: 212,
       branchTriggerTime: 14,
       backgroundAnimation: {
         type: 'horizontal',
@@ -529,126 +517,108 @@ export const adventureStoryConfig: InteractiveVideoConfig = {
       id: 'village-secrets',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 10,
-      seekTime: 0,
       isEnd: true
     },
     {
       id: 'heroic-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 12,
-      seekTime: 10,
       isEnd: true
     },
     {
       id: 'collaborative-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 10,
-      seekTime: 0,
       isEnd: true
     },
     {
       id: 'diplomatic-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
-      seekTime: 22,
       isEnd: true
     },
     {
       id: 'wise-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
-      seekTime: 30,
       isEnd: true
     },
     {
       id: 'independent-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 6,
-      seekTime: 10,
       isEnd: true
     },
     {
       id: 'ruins-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 14,
-      seekTime: 38,
       isEnd: true
     },
     {
       id: 'spring-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 9,
-      seekTime: 16,
       isEnd: true
     },
     {
       id: 'treasure-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 11,
-      seekTime: 52,
       isEnd: true
     },
     {
       id: 'danger-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 7,
-      seekTime: 25,
       isEnd: true
     },
     {
       id: 'map-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 9,
-      seekTime: 63,
       isEnd: true
     },
     {
       id: 'trade-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 8,
-      seekTime: 32,
       isEnd: true
     },
     {
       id: 'courage-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 13,
-      seekTime: 72,
       isEnd: true
     },
     {
       id: 'shelter-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 6,
-      seekTime: 40,
       isEnd: true
     },
     {
       id: 'cave-treasure-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 10,
-      seekTime: 85,
       isEnd: true
     },
     {
       id: 'rest-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 5,
-      seekTime: 46,
       isEnd: true
     },
     {
       id: 'downstream-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 12,
-      seekTime: 95,
       isEnd: true
     },
     {
       id: 'crossing-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 8,
-      seekTime: 51,
       isEnd: true
     }
   ]
@@ -671,7 +641,6 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'tutorial-start',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 12,
-      seekTime: 0,
       branchTriggerTime: 9,
       backgroundAnimation: {
         type: 'scale',
@@ -718,7 +687,6 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'basics-lesson',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 15,
-      seekTime: 12,
       branchTriggerTime: 12,
       branchTitle: {
         text: '基础功能学习',
@@ -750,7 +718,6 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'advanced-lesson',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 18,
-      seekTime: 27,
       branchTriggerTime: 15,
       backgroundAnimation: {
         type: 'horizontal',
@@ -797,7 +764,6 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'demo-lesson',
       videoUrl: '/assest/BigBuckBunny.mp4',
       duration: 20,
-      seekTime: 45,
       branchTriggerTime: 17,
       branchTitle: {
         text: '快速演示模式',
@@ -830,28 +796,24 @@ export const tutorialConfig: InteractiveVideoConfig = {
       id: 'basic-practice-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 8,
-      seekTime: 0,
       isEnd: true
     },
     {
       id: 'advanced-practice-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 10,
-      seekTime: 0,
       isEnd: true
     },
     {
       id: 'tutorial-complete-ending',
       videoUrl: '/assest/ForBiggerBlazes.mp4',
       duration: 6,
-      seekTime: 8,
       isEnd: true
     },
     {
       id: 'demo-complete-ending',
       videoUrl: '/assest/ElephantsDream.mp4',
       duration: 7,
-      seekTime: 10,
       isEnd: true
     }
   ]

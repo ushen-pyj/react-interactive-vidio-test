@@ -57,6 +57,8 @@ declare module 'videocontext' {
     // Events
     addEventListener(event: string, callback: Function): void;
     removeEventListener(event: string, callback: Function): void;
+    registerCallback(event: string, callback: Function): void;
+    unregisterCallback(event: string, callback: Function): void;
   }
 
   export default VideoContext;
