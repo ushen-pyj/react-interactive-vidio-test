@@ -209,7 +209,13 @@ export class VideoSequenceManager {
 
   // 查找下一个片段
   private findNextSegment(currentSegment: VideoSegment): VideoSegment | null {
-    // 如果有分支，不自动播放下一个
+    // 如果设置了autoNext，自动选择第一个分支
+    if (currentSegment.autoNext && currentSegment.branches && currentSegment.branches.length > 0) {
+      const firstBranch = currentSegment.branches[0];
+      return this.getSegmentById(firstBranch.nextSegmentId);
+    }
+    
+    // 如果有分支但没有设置autoNext，不自动播放下一个
     if (currentSegment.branches && currentSegment.branches.length > 0) {
       return null;
     }

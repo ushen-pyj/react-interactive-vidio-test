@@ -91,6 +91,13 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
 
     try {
       const canvas = canvasRef.current;
+      
+      // 设置canvas尺寸
+      if (config.settings?.width && config.settings?.height) {
+        canvas.width = config.settings.width;
+        canvas.height = config.settings.height;
+      }
+      
       const videoCtx = new VideoContext(canvas);
       videoContextRef.current = videoCtx;
       
@@ -512,7 +519,16 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       }} />
 
       {/* 视频容器 */}
-      <div className="video-container relative w-full h-full bg-black rounded-lg overflow-hidden">
+      <div 
+        className="video-container relative bg-black rounded-lg overflow-hidden"
+        style={{
+          width: config.settings?.width ? `${config.settings.width}px` : '100%',
+          height: config.settings?.height ? `${config.settings.height}px` : 'auto',
+          aspectRatio: config.settings?.width && config.settings?.height 
+            ? `${config.settings.width} / ${config.settings.height}` 
+            : '16 / 9'
+        }}
+      >
         {/* 背景动画帧 */}
         {(() => {
           const shouldShow = showBackgroundAnimation && backgroundFrame && currentSegment?.backgroundAnimation !== undefined;
@@ -556,12 +572,16 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         {/* VideoContext Canvas */}
         <canvas
           ref={canvasRef}
-          className="w-full h-full object-cover relative z-10"
+          className="object-cover relative z-10"
+          width={config.settings?.width || 1280}
+          height={config.settings?.height || 720}
           style={{ 
             display: 'block', 
             backgroundColor: showBackgroundAnimation ? 'transparent' : 'black',
             // 当有背景动画时，让canvas稍微透明以显示背景
-            opacity: showBackgroundAnimation ? 0.95 : 1
+            opacity: showBackgroundAnimation ? 0.95 : 1,
+            width: config.settings?.width ? `${config.settings.width}px` : '100%',
+            height: config.settings?.height ? `${config.settings.height}px` : 'auto'
           }}
         />
         {/* 分支选择覆盖层 - 透明背景，支持配置位置和样式 */}

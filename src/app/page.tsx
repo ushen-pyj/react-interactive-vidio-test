@@ -155,6 +155,30 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6">
             {/* 冒险故事示例 */}
             <div className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer group"
+                 onClick={() => handleConfigSelect('theInvisibleGuardian')}>
+              <div className="flex items-start">
+                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+                  </svg>
+                </div>
+                <div className="ml-4 flex-1">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                    隐形守护者
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    一个充满选择的互动冒险故事，包含多个分支路径和不同的结局。体验复杂的故事线和决策系统。
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">多分支</span>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">复杂故事</span>
+                    <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">多结局</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer group"
                  onClick={() => handleConfigSelect('adventure')}>
               <div className="flex items-start">
                 <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-blue-500 rounded-lg flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">

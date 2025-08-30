@@ -120,19 +120,35 @@ export class VideoSegmentPlayer {
       let branchTime = this.videoNode.startTime + (this.segment.branchTriggerTime ?? this.segment.duration);
       // // 设置分支触发定时器（片段结束事件将在分支选择触发时处理）
       // this.setupBranchTrigger();
+      let isTriggerBranch: boolean = false
+      const triggerEndOrBranch = () =>{
+        if(isTriggerBranch) return;
+        isTriggerBranch = true
+        console.log("triggerEndOrBranch", isTriggerBranch, this.segment.autoNext);
+        if (this.segment.autoNext) {
+          this.handleSegmentEnd();
+        } else if (this.segment.branchTriggerTime && this.segment.branches) {
+          this.triggerBranchSelection();
+        } else {
+          this.handleSegmentEnd();
+        }
+      }
       let handleUpdate: () => void;
       handleUpdate = () => {
-        // console.log("handleUpdate", this.videoContext.currentTime, branchTime);
+        console.log("handleUpdate", this.videoContext.currentTime, branchTime, isTriggerBranch);
         if (this.videoContext.currentTime < branchTime) {
           return
         }
         this.videoContext.unregisterCallback(handleUpdate);
-        if (this.segment.branchTriggerTime && this.segment.branches) {
-          this.triggerBranchSelection();
-        }else{
-          this.handleSegmentEnd();
-        }
+        triggerEndOrBranch()
       };
+      let handleEnd: () => void;
+      handleEnd = () => {
+        console.log("handleEnd", isTriggerBranch);
+        this.videoContext.unregisterCallback(handleEnd);
+        triggerEndOrBranch()
+      }
+      this.videoContext.registerCallback(EVENTS.ENDED, handleEnd);
       this.videoContext.registerCallback(EVENTS.UPDATE, handleUpdate);
       console.log(`✅ 片段 ${this.segment.id} 开始播放`);
 
