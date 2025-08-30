@@ -428,11 +428,14 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         // console.log('↕️ 垂直动画样式:', style);
         break;
       case 'scale':
+        // 确保最小缩放不小于1.0，避免缩小时显示黑色底
+        const scaleMin = Math.max(1.0, 1 - amplitude * 0.01);
+        const scaleMax = 1 + amplitude * 0.01;
         style = {
           ...baseStyle,
           animationName: 'backgroundScale',
-          '--scale-min': `${1 - amplitude * 0.01}`,
-          '--scale-max': `${1 + amplitude * 0.01}`
+          '--scale-min': `${scaleMin}`,
+          '--scale-max': `${scaleMax}`
         };
         // console.log('🔍 缩放动画样式:', style);
         break;

@@ -135,7 +135,7 @@ export class VideoSegmentPlayer {
       }
       let handleUpdate: () => void;
       handleUpdate = () => {
-        console.log("handleUpdate", this.videoContext.currentTime, branchTime, isTriggerBranch);
+        // console.log("handleUpdate", this.videoContext.currentTime, branchTime, isTriggerBranch);
         if (this.videoContext.currentTime < branchTime) {
           return
         }
