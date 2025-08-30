@@ -104,6 +104,8 @@ export interface VideoSegment {
   branchTitle?: TitleConfig;
   // 背景动画配置
   backgroundAnimation?: BackgroundAnimation;
+  // 自动跳转到下一段，默认false
+  autoNext?: boolean;
 }
 
 // 互动视频配置接口

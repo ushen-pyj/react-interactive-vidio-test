@@ -819,10 +819,60 @@ export const tutorialConfig: InteractiveVideoConfig = {
   ]
 };
 
+export const theInvisibleGuardianConfig = {
+    id: 'the-invisible-guardian',
+    title: '隐形守护者',
+    description: '一个充满选择的互动冒险故事，你的每个决定都会影响故事的走向。',
+    startSegmentId: 'intro',
+    settings: {
+      autoPlay: true,
+      showControls: false,
+      width: 1280,
+      height: 780
+    },
+    segments: [
+      {
+        id: 'intro',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/1_so_Convert_955dfe72c3.mp4',
+        duration: 10,
+        autoNext: true,
+        branches: [
+          {
+            id: 'intro1',
+            label: '序章1',
+            text: '序章1',
+            description: '序章1',
+            nextSegmentId: 'intro1',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'intro1',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/2_so_Convert_e67d23c309.mp4',
+        duration: 7,
+        autoNext: true,
+        branches: [
+          {
+            id: 'intro2',
+            label: '序章2',
+            text: '序章2',
+            description: '序章2',
+            nextSegmentId: 'intro2',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      }
+    ]
+}
+
 // 所有可用的配置
 export const availableConfigs = {
   adventure: adventureStoryConfig,
-  tutorial: tutorialConfig
+  tutorial: tutorialConfig,
+  theInvisibleGuardian: theInvisibleGuardianConfig,
 };
 
 export default availableConfigs;
