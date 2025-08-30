@@ -41,9 +41,10 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
   const [playerState, setPlayerState] = useState<PlayerState>(PlayerState.IDLE);
   const [currentSegment, setCurrentSegment] = useState<VideoSegment | null>(null);
   const [availableBranches, setAvailableBranches] = useState<BranchOption[]>([]);
-  const [isVideoContextLoaded, setIsVideoContextLoaded] = useState(false);
-  const [backgroundFrame, setBackgroundFrame] = useState<string | null>(null);
   const [showBackgroundAnimation, setShowBackgroundAnimation] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState<number>(1.0);
+  const [backgroundFrame, setBackgroundFrame] = useState<string | null>(null);
+  const [isVideoContextLoaded, setIsVideoContextLoaded] = useState(false);
 
   // 加载VideoContext库
   useEffect(() => {
@@ -99,6 +100,8 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       }
       
       const videoCtx = new VideoContext(canvas);
+      // 设置初始倍速
+      videoCtx.playbackRate = playbackRate;
       videoContextRef.current = videoCtx;
       
       // 创建VideoSequenceManager实例
@@ -127,8 +130,8 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
         },
         onFrameCapture: (frameData: string, segment: VideoSegment) => {
           console.log('🖼️ 收到帧捕获回调，片段:', segment.id);
-          // console.log('🎨 背景动画配置:', segment.backgroundAnimation);
-          // console.log('📊 帧数据长度:', frameData.length);
+          console.log('🎨 背景动画配置:', segment.backgroundAnimation);
+          console.log('📊 帧数据长度:', frameData.length);
           
           setBackgroundFrame(frameData);
           if (segment.backgroundAnimation?.enabled) {
@@ -205,6 +208,14 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
     }
   }, [playerState]); // 移除events依赖项
 
+  // 倍速调整函数
+  const changePlaybackRate = useCallback((rate: number) => {
+    if (videoContextRef.current) {
+      videoContextRef.current.playbackRate = rate;
+      setPlaybackRate(rate);
+    }
+  }, []);
+
   // 监控背景动画元素样式
   useEffect(() => {
     if (backgroundAnimationRef.current && showBackgroundAnimation) {
@@ -222,9 +233,9 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
       // console.log('  - position:', computedStyle.position);
       
       // 检查CSS变量
-      const amplitude = computedStyle.getPropertyValue('--amplitude');
-      const scaleMin = computedStyle.getPropertyValue('--scale-min');
-      const scaleMax = computedStyle.getPropertyValue('--scale-max');
+      // const amplitude = computedStyle.getPropertyValue('--amplitude');
+      // const scaleMin = computedStyle.getPropertyValue('--scale-min');
+      // const scaleMax = computedStyle.getPropertyValue('--scale-max');
       // console.log('  - CSS变量 --amplitude:', amplitude);
       // console.log('  - CSS变量 --scale-min:', scaleMin);
       // console.log('  - CSS变量 --scale-max:', scaleMax);
@@ -539,12 +550,12 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
           // console.log('  - backgroundAnimation配置:', currentSegment?.backgroundAnimation);
           // console.log('  - 最终显示:', shouldShow);
           
-          if (shouldShow) {
-            const animationStyle = getBackgroundAnimationStyle(currentSegment.backgroundAnimation);
-            // console.log('🎨 动画样式:', animationStyle);
-          }
+          // if (shouldShow) {
+          //   const animationStyle = getBackgroundAnimationStyle(currentSegment.backgroundAnimation);
+          //   // console.log('🎨 动画样式:', animationStyle);
+          // }
           
-          return shouldShow ? (
+          return (
             <div 
               ref={backgroundAnimationRef}
               className="absolute inset-0 z-20"
@@ -554,7 +565,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 filter: 'blur(2px) brightness(0.7)',
-                ...getBackgroundAnimationStyle(currentSegment.backgroundAnimation)
+                ...(shouldShow ? getBackgroundAnimationStyle(currentSegment.backgroundAnimation) : {})
               }}
               onAnimationStart={(e) => {
                 // console.log('🎬 背景动画开始:', e.animationName);
@@ -566,7 +577,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
                 // console.log('🏁 背景动画结束:', e.animationName);
               }}
             />
-          ) : null;
+          );
         })()}
         
         {/* VideoContext Canvas */}
@@ -680,6 +691,24 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
             播放
           </button>
         )}
+        
+        {/* 倍速选择器 */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">倍速:</span>
+          <select
+            value={playbackRate}
+            onChange={(e) => changePlaybackRate(parseFloat(e.target.value))}
+            className="bg-white border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value={0.5}>0.5x</option>
+            <option value={0.75}>0.75x</option>
+            <option value={1.0}>1.0x</option>
+            <option value={1.25}>1.25x</option>
+            <option value={1.5}>1.5x</option>
+            <option value={2.0}>2.0x</option>
+            <option value={3.0}>3.0x</option>
+          </select>
+        </div>
         
         <div className="text-sm text-gray-600">
           当前片段: {currentSegment?.id || '无'}

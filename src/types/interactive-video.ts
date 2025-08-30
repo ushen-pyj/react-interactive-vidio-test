@@ -174,6 +174,7 @@ export interface VideoContextInstance {
   destination: any;
   registerCallback: (event: string, callback: Function) => void;
   unregisterCallback: (callback: Function) => void;
+  playbackRate: number;
 }
 
 
