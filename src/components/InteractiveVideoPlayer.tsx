@@ -565,7 +565,7 @@ export const InteractiveVideoPlayer: React.FC<InteractiveVideoPlayerProps> = ({
               ref={backgroundAnimationRef}
               className="absolute inset-0 z-20"
               style={{
-                backgroundImage: `url(${backgroundFrame})`,
+                backgroundImage: backgroundFrame  ? `url(${backgroundFrame})` : 'none',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',

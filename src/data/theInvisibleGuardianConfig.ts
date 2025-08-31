@@ -236,7 +236,33 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
         id: 'jushou4',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/4_so_Convert_93944f1b08.mp4',
         duration: 10,
-        isEnd: true,
+        branchTriggerTime: 10,
+        backgroundAnimation: {
+          type: 'horizontal',
+          duration: 4,
+          amplitude: 5,
+          enabled: true
+        },
+        branches: [
+          {
+            id: 'jixuzhanzheng1',
+            label: '继续战争,彻底消灭反日示例',
+            text: '继续战争,彻底消灭反日示例',
+            description: '继续战争,彻底消灭反日示例',
+            nextSegmentId: 'jixuzhanzheng1',
+            position: { x: 'left', y: 'bottom', offsetX: 200, offsetY: 200 },
+            style: createButtonStyle('transparent')
+          },
+          {
+            id: 'hepingtanpan1',
+            label: '和平谈判，通过外交解决争端',
+            text: '和平谈判，通过外交解决争端',
+            description: '和平谈判，通过外交解决争端',
+            nextSegmentId: 'hepingtanpan1',
+            position: { x: 'right', y: 'bottom', offsetX: -400, offsetY: 200 },
+            style: createButtonStyle('transparent')
+          }
+        ]
       },
       {
         id: 'bujushou1',
@@ -312,6 +338,228 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
         duration: 9,
         isEnd: true,
       },
+      {
+        id: 'hepingtanpan1',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/5_so_Convert_8449375787.mp4',
+        duration: 9,
+        isEnd: true,
+      },
+      {
+        id: 'jixuzhanzheng1',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/1_so_Convert_848eb08d5a.mp4',
+        duration: 8,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng2',
+            label: '继续战争,彻底消灭反日示例2',
+            text: '继续战争,彻底消灭反日示例2',
+            description: '继续战争,彻底消灭反日示例2',
+            nextSegmentId: 'jixuzhanzheng2',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng2',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/2_so_Convert_597bff704e.mp4',
+        duration: 10,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng3',
+            label: '继续战争,彻底消灭反日示例3',
+            text: '继续战争,彻底消灭反日示例3',
+            description: '继续战争,彻底消灭反日示例3',
+            nextSegmentId: 'jixuzhanzheng3',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng3',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/3_so_Convert_75a1a21dd8.mp4',
+        duration: 11,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng4',
+            label: '继续战争,彻底消灭反日示例4',
+            text: '继续战争,彻底消灭反日示例4',
+            description: '继续战争,彻底消灭反日示例4',
+            nextSegmentId: 'jixuzhanzheng4',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng4',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/4_so_Convert_88d20b2831.mp4',
+        duration: 12,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng5',
+            label: '继续战争,彻底消灭反日示例5',
+            text: '继续战争,彻底消灭反日示例5',
+            description: '继续战争,彻底消灭反日示例5',
+            nextSegmentId: 'jixuzhanzheng5',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng5',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/5_so_Convert_4d55a1d11b.mp4',
+        duration: 6,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng6',
+            label: '继续战争,彻底消灭反日示例6',
+            text: '继续战争,彻底消灭反日示例6',
+            description: '继续战争,彻底消灭反日示例6',
+            nextSegmentId: 'jixuzhanzheng6',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng6',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/6_so_Convert_7c905775a8.mp4',
+        duration: 6,
+        branchTriggerTime: 6,
+        backgroundAnimation: {
+          type: 'vertical',
+          duration: 4,
+          amplitude: 5,
+          enabled: true
+        },
+        branches: [
+          {
+            id: 'jixuzhanzheng7',
+            label: '点击敬酒',
+            text: '点击敬酒',
+            description: '点击敬酒',
+            nextSegmentId: 'jixuzhanzheng7',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng7',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/7_so_Convert_f2c4e57ef0.mp4',
+        duration: 9,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng8',
+            label: '',
+            text: '',
+            description: '',
+            nextSegmentId: 'jixuzhanzheng8',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng8',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/8_so_Convert_f463a8e5c7.mp4',
+        duration: 8,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng9',
+            label: '',
+            text: '',
+            description: '',
+            nextSegmentId: 'jixuzhanzheng9',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng9',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/9_so_Convert_42cc529fb3.mp4',
+        duration: 8,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng10',
+            label: '',
+            text: '',
+            description: '',
+            nextSegmentId: 'jixuzhanzheng10',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng10',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/10_so_Convert_3e98082c20.mp4',
+        duration: 9,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng11',
+            label: '',
+            text: '',
+            description: '',
+            nextSegmentId: 'jixuzhanzheng11',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng11',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/11_so_Convert_e94c623c6e.mp4',
+        duration: 11,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng12',
+            label: '',
+            text: '',
+            description: '',
+            nextSegmentId: 'jixuzhanzheng12',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng12',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/12_so_Convert_58dad2a6a8.mp4',
+        duration: 10,
+        autoNext: true,
+        branches: [
+          {
+            id: 'jixuzhanzheng13',
+            label: '',
+            text: '',
+            description: '',
+            nextSegmentId: 'jixuzhanzheng13',
+            position: { x: 'center', y: 'center' },
+            style: createButtonStyle('circle-large')
+          }
+        ]
+      },
+      {
+        id: 'jixuzhanzheng13',
+        videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/13_so_Convert_848ae93c72.mp4',
+        duration: 8,
+        isEnd: true
+      }
     ]
 };
 
