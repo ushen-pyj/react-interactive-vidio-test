@@ -16,6 +16,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/1_so_Convert_955dfe72c3.mp4',
+        text: "我们已经为你安排好亚辉通讯社的工作，组织给你的命令只有一个。想",
         duration: 10,
         autoNext: true,
         branches: [
@@ -33,6 +34,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro1',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/2_so_Convert_e67d23c309.mp4',
+        text:"尽一切办法打入日本高层，然后等待下一步指示",
         duration: 7,
         autoNext: true,
         branches: [
@@ -50,6 +52,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro2',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/3_so_Convert_aec515026e.mp4',
+        text: "建立大东亚新秩序是天皇的目标，我们帮助中国实现农业商业的发展，更重视日",
         duration: 9,
         autoNext: true,
         branches: [
@@ -67,6 +70,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro3',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/4_so_Convert_081499c711.mp4',
+        text: "中文化交流，我们每年都会在中国新建学校，为儿童提供良好教育。你们这些侵略者，让我中华山河破碎。",
         duration: 9,
         autoNext: true,
         branches: [
@@ -84,6 +88,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro4',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/5_so_Convert_e8e8177d9c.mp4',
+        text: "尸横遍野，醒醒吧，同胞们，再不反抗，中国就亡国了。你们想干什么？放开我",
         duration: 9,
         autoNext: true,
         branches: [
@@ -101,6 +106,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro5',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/6_so_Convert_fb1cad1de5.mp4',
+        text: "有本事就在这里毙了我，国耻啊，国耻啊，放开我，放开我。",
         duration: 9,
         autoNext: true,
         branches: [
@@ -118,6 +124,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro6',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/7_so_Convert_b9d11b1fa0.mp4',
+        text: "一点骚动，希望各位不要在意",
         duration: 9,
         autoNext: true,
         branches: [
@@ -135,6 +142,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'intro7',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/8_so_Convert_29978112eb.mp4',
+        text: "下一位提问的记者是?没有人想再提问了?",
         duration: 10,
         autoNext: true,
         branches: [
@@ -184,6 +192,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jushou1',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/1_so_Convert_769637c3ec.mp4',
+        text: "这位记者请,我是亚辉通讯社记者肖途",
         duration: 9,
         autoNext: true,
         branches: [
@@ -201,6 +210,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jushou2',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/2_so_Convert_2cb2706718.mp4',
+        text: "请问您对目前的中日战事有何看法？日本和中国一衣带水，本该是善邻友好的关系，如今却深陷战争之中",
         duration: 10,
         autoNext: true,
         branches: [
@@ -218,6 +228,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jushou3',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/3_so_Convert_ca4cdfc564.mp4',
+        text: "受苦受难的百姓，我为之心痛啊，所以我一直在寻找改变当前局势的方法。肖记者，你有什么高见呢？",
         duration: 11,
         autoNext: true,
         branches: [
@@ -267,6 +278,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'bujushou1',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/1_so_Convert_50b0e72b83.mp4',
+        text: "今天就到这里, 辛苦各位了",
         duration: 7,
         autoNext: true,
         branches: [
@@ -301,6 +313,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'bujushou3',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/3_so_Convert_5e1685ff2d.mp4',
+        text: "肖途啊，看来潜伏工作不适合你，革命也不是非要在第一线，老师放心。",
         duration: 10,
         autoNext: true,
         branches: [
@@ -318,6 +331,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'bujushou4',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/4_so_Convert_6648b25c03.mp4',
+        text: "你要多保重身体。",
         duration: 7,
         autoNext: true,
         branches: [
@@ -347,6 +361,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng1',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/1_so_Convert_848eb08d5a.mp4',
+        text: "当然是继续战争，依靠帝国的武力彻底消灭反日势力。肖记者，我与你的看法不同。",
         duration: 8,
         autoNext: true,
         branches: [
@@ -364,6 +379,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng2',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/2_so_Convert_597bff704e.mp4',
+        text: "战争只会无端增加人民的伤亡，破坏利益中美好的友谊。我认为只有利益中相互提携，共享丰富",
         duration: 10,
         autoNext: true,
         branches: [
@@ -381,6 +397,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng3',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/3_so_Convert_75a1a21dd8.mp4',
+        text: "资源,这样才能实现大东亚新秩序，这也是日中两国人民共同的愿望，肖记者。",
         duration: 11,
         autoNext: true,
         branches: [
@@ -398,6 +415,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng4',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/4_so_Convert_88d20b2831.mp4',
+        text: "我希望你就今天的采访好好的写一篇文章，让全世界都知道我武藤志雄对和平的渴望，好吗？",
         duration: 12,
         autoNext: true,
         branches: [
@@ -415,6 +433,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng5',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/5_so_Convert_4d55a1d11b.mp4',
+        text: "领事，我一定竭尽所能。以上,谢谢大家",
         duration: 6,
         autoNext: true,
         branches: [
@@ -455,6 +474,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng7',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/7_so_Convert_f2c4e57ef0.mp4',
+        text: "肖君，上次的文章我看了，写的非常好。",
         duration: 9,
         autoNext: true,
         branches: [
@@ -472,6 +492,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng8',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/8_so_Convert_f463a8e5c7.mp4',
+        text: "不过还有不少民众被某些报社的无良言论迷惑，不能理解我们的善意。",
         duration: 8,
         autoNext: true,
         branches: [
@@ -489,6 +510,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng9',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/9_so_Convert_42cc529fb3.mp4',
+        text: "别人的看法又何必在意呢？肖君，你是报社圈子的人，打听消息也方便。",
         duration: 8,
         autoNext: true,
         branches: [
@@ -506,6 +528,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng10',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/10_so_Convert_3e98082c20.mp4',
+        text: "能不能请你为我整理一份名单，把所有发表过无良言论的记者编辑的名字通通的记录下来？",
         duration: 9,
         autoNext: true,
         branches: [
@@ -523,6 +546,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng11',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/11_so_Convert_e94c623c6e.mp4',
+        text: "难道领事打算? 怎么样，肖君？",
         duration: 11,
         autoNext: true,
         branches: [
@@ -540,6 +564,7 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
       {
         id: 'jixuzhanzheng12',
         videoUrl: 'https://decisive-acoustics-d6d7084427.media.strapiapp.com/12_so_Convert_58dad2a6a8.mp4',
+        text: "我，我尽力而为吧，那就辛苦你了。",
         duration: 10,
         autoNext: true,
         branches: [
@@ -563,4 +588,14 @@ export const theInvisibleGuardianConfig: InteractiveVideoConfig = {
     ]
 };
 
+let a = []
+theInvisibleGuardianConfig.segments.forEach(item => {
+  a.push({
+    audioTitle: item.id,
+    audioUrl: item.videoUrl,
+    content: item.text
+  })
+})
+
+console.log(a)
 export default theInvisibleGuardianConfig;
