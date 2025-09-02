@@ -92,6 +92,7 @@ export interface BranchOption {
 export interface VideoSegment {
   id: string;
   videoUrl: string;
+  text?: string;
   // 播放时长（秒）
   duration: number;
   // 分支触发点（相对于片段开始时间的秒数）
